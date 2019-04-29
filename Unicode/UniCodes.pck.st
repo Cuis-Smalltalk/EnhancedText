@@ -1,11 +1,11 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3564] on 22 January 2019 at 4:55:09 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3720] on 29 April 2019 at 3:05:10 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 52!
-!requires: 'Collections-CompactArrays' 1 4 nil!
+!provides: 'UniCodes' 1 53!
 !requires: 'Goodies' 1 6 nil!
-!requires: 'Cuis-Base' 50 3564 nil!
 !requires: 'Compression' 1 nil nil!
+!requires: 'Cuis-Base' 50 3720 nil!
+!requires: 'Collections-CompactArrays' 1 4 nil!
 SystemOrganization addCategory: #UniCodes!
 
 
@@ -353,6 +353,78 @@ Use in place of WriteStream for #nextPut: and #nextPutAll.
  vs:
 	WriteStream on: 'abc',
 !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 9/5/2016 09:23:19'!
+printOn: aStream 
+	"Look good in the inspector"
+"
+	'little string thing' asUniString inspect.
+"
+	aStream nextPutAll: 'UniString('.
+	self stringRepresentation printOn: aStream.
+	aStream nextPut: $)! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 18:48:29'!
+storeOn: aStream 
+	"Print inside string quotes, doubling inbedded quotes."
+	
+	self stringRepresentation printString storeOn: aStream! !
+
+!UniLazyString methodsFor: 'printing' stamp: 'KenD 4/18/2013 21:35'!
+printOn: aStream 
+	"Look good in the inspector"
+"
+	'little string thing' asUniString inspect.
+"
+	aStream nextPutAll: 'UniLazyString(''' , fileName , ''')'
+	! !
+
+!UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 16:47'!
+name
+
+	"Answer my font name"
+	^ 'GNU Unifont'! !
+
+!UniChar methodsFor: 'printing' stamp: 'KenD 1/20/2019 17:29:10'!
+printOn: aStream
+	"Display for humans"
+
+	(codePoint < 16rFF) "Fits in a byte?"
+	ifTrue: [
+		aStream nextPut: (Character codePoint: codePoint)
+	]
+	ifFalse: [ "Do what Cuis does as with String>>fromUtf8: "
+		aStream nextPutAll: '&#'.
+		codePoint printOn: aStream base: 10.
+		aStream nextPut: $; 
+	]! !
+
+!UniChar methodsFor: 'printing' stamp: 'KenD 3/18/2013 21:33'!
+storeOn: aStream
+	"Character literals are preceded by '$'."
+
+	"store to be read back by computer"
+	(codePoint <= 16rFF)
+	ifTrue: [ aStream nextPut: $$; nextPut: codePoint asCharacter] "Character literal"
+	ifFalse: [aStream nextPutAll: '(UniChar fromCodePoint: '.
+			aStream nextPutAll: codePoint hex.
+			aStream nextPut: $). ]! !
+
+!UniStringWrapper methodsFor: 'delegation' stamp: 'KenD 3/22/2013 16:43'!
+storeOn: aStream
+
+	uniString storeOn: aStream ! !
+
+!UniStringWrapper methodsFor: 'printing' stamp: 'KenD 3/24/2013 13:27'!
+printOn: aStream
+	"Look good in the inspector"
+"
+	(UniStringWrapper fromString: 'little wrapped thing') inspect.
+"
+	aStream nextPutAll: 'Uni*Wrap*('. "UniStringWrapper is very long"
+	uniString storeOn: aStream.
+	aStream nextPut: $)
+	! !
 
 !PluggableUniTextModel methodsFor: 'misc' stamp: 'KenD 10/25/2016 14:57:08'!
 refetch
@@ -2428,16 +2500,6 @@ print
 
 	Transcript addEntry: self. Transcript newLine ! !
 
-!UniString methodsFor: 'printing' stamp: 'KenD 9/5/2016 09:23:19'!
-printOn: aStream 
-	"Look good in the inspector"
-"
-	'little string thing' asUniString inspect.
-"
-	aStream nextPutAll: 'UniString('.
-	self stringRepresentation printOn: aStream.
-	aStream nextPut: $)! !
-
 !UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 15:17:43'!
 printString
 
@@ -2449,12 +2511,6 @@ printStringLimitedTo: limit
 	If you want to print without a character limit, use fullPrintString."
 
 	^self stringRepresentation printAs: String limitedTo: limit! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 18:48:29'!
-storeOn: aStream 
-	"Print inside string quotes, doubling inbedded quotes."
-	
-	self stringRepresentation printString storeOn: aStream! !
 
 !UniString methodsFor: 'printing' stamp: 'KenD 3/31/2013 22:48'!
 stringRepresentation
@@ -3524,15 +3580,6 @@ initializeFromFile: aName
 	^self
 	! !
 
-!UniLazyString methodsFor: 'printing' stamp: 'KenD 4/18/2013 21:35'!
-printOn: aStream 
-	"Look good in the inspector"
-"
-	'little string thing' asUniString inspect.
-"
-	aStream nextPutAll: 'UniLazyString(''' , fileName , ''')'
-	! !
-
 !UniLazyString class methodsFor: 'class initialization' stamp: 'KenD 4/18/2013 19:10'!
 initialize
 "
@@ -4483,11 +4530,10 @@ height
 
 	^16! !
 
-!UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 16:47'!
-name
+!UniForms methodsFor: 'accessing' stamp: 'KenD 4/29/2019 14:54:50'!
+lineSpacing
 
-	"Answer my font name"
-	^ 'GNU Unifont'! !
+	^16! !
 
 !UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 17:12'!
 pointSize
@@ -5933,31 +5979,6 @@ rangeInfo3
 ^ #( 'Unassigned' 'Unknown' )
 ! !
 
-!UniChar methodsFor: 'printing' stamp: 'KenD 1/20/2019 17:29:10'!
-printOn: aStream
-	"Display for humans"
-
-	(codePoint < 16rFF) "Fits in a byte?"
-	ifTrue: [
-		aStream nextPut: (Character codePoint: codePoint)
-	]
-	ifFalse: [ "Do what Cuis does as with String>>fromUtf8: "
-		aStream nextPutAll: '&#'.
-		codePoint printOn: aStream base: 10.
-		aStream nextPut: $; 
-	]! !
-
-!UniChar methodsFor: 'printing' stamp: 'KenD 3/18/2013 21:33'!
-storeOn: aStream
-	"Character literals are preceded by '$'."
-
-	"store to be read back by computer"
-	(codePoint <= 16rFF)
-	ifTrue: [ aStream nextPut: $$; nextPut: codePoint asCharacter] "Character literal"
-	ifFalse: [aStream nextPutAll: '(UniChar fromCodePoint: '.
-			aStream nextPutAll: codePoint hex.
-			aStream nextPut: $). ]! !
-
 !UniChar class methodsFor: 'private' stamp: 'KenD 3/9/2013 15:23'!
 AI
 	^AL! !
@@ -7056,11 +7077,6 @@ size
 
 	^ uniString size! !
 
-!UniStringWrapper methodsFor: 'delegation' stamp: 'KenD 3/22/2013 16:43'!
-storeOn: aStream
-
-	uniString storeOn: aStream ! !
-
 !UniStringWrapper methodsFor: 'delegation' stamp: 'KenD 3/22/2013 16:41'!
 stringRepresentation
 
@@ -7077,17 +7093,6 @@ with: aString
 	"Initialize uniString"
 
 	uniString := aString asUniString.! !
-
-!UniStringWrapper methodsFor: 'printing' stamp: 'KenD 3/24/2013 13:27'!
-printOn: aStream
-	"Look good in the inspector"
-"
-	(UniStringWrapper fromString: 'little wrapped thing') inspect.
-"
-	aStream nextPutAll: 'Uni*Wrap*('. "UniStringWrapper is very long"
-	uniString storeOn: aStream.
-	aStream nextPut: $)
-	! !
 
 !UniStringWrapper methodsFor: 'printing' stamp: 'KenD 3/22/2013 16:39'!
 printString
