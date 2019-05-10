@@ -1,10 +1,10 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3720] on 29 April 2019 at 3:05:10 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3728] on 5 May 2019 at 3:20:21 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 53!
-!requires: 'Goodies' 1 6 nil!
+!provides: 'UniCodes' 1 54!
 !requires: 'Compression' 1 nil nil!
 !requires: 'Cuis-Base' 50 3720 nil!
+!requires: 'Goodies' 1 6 nil!
 !requires: 'Collections-CompactArrays' 1 4 nil!
 SystemOrganization addCategory: #UniCodes!
 
@@ -852,6 +852,51 @@ serviceGetUnicode
 			selector: #getUnicode
 			description: 'view as Unicode')
 			! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 21:00'!
+encodeDoublingQuoteOn: aStream 
+	"Print inside string quotes, doubling embedded quotes."
+
+	aStream print: $'.
+	self do: [ :char  |
+		aStream print: char.
+		char == $' ifTrue: [aStream print: char]].
+	aStream print: $'! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 16:47'!
+print
+	"Display self on the Transcript"
+
+	Transcript addEntry: self. Transcript newLine ! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 15:17:43'!
+printString
+
+	^ self stringRepresentation printString! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 18:45:47'!
+printStringLimitedTo: limit
+	"Answer a String whose characters are a description of the receiver.
+	If you want to print without a character limit, use fullPrintString."
+
+	^self stringRepresentation printAs: String limitedTo: limit! !
+
+!UniString methodsFor: 'printing' stamp: 'KenD 3/31/2013 22:48'!
+stringRepresentation
+
+	"Do what Cuis does in String>>fromUtf8:hex:trimLastNull: "
+	
+	^String streamContents: [:strm | 
+		self codePointsDo: [ :codePoint | 
+			(codePoint < 16rFF) "Single byte?"
+			ifTrue: [ strm nextPut: (codePoint asCharacter ) ]
+			ifFalse: [
+				strm nextPutAll: '&#x'.
+				codePoint printOn: strm base: 16 length: 4 padded: true.
+				strm nextPut: $; 
+			]
+		]
+	]! !
 
 !UniString methodsFor: 'copying' stamp: 'KenD 9/4/2016 16:52:24'!
 , aStringOrText
@@ -2483,51 +2528,6 @@ editorClass
 editorClassFor: textGetter
 
 	^ UniTextEditor! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 21:00'!
-encodeDoublingQuoteOn: aStream 
-	"Print inside string quotes, doubling embedded quotes."
-
-	aStream print: $'.
-	self do: [ :char  |
-		aStream print: char.
-		char == $' ifTrue: [aStream print: char]].
-	aStream print: $'! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 16:47'!
-print
-	"Display self on the Transcript"
-
-	Transcript addEntry: self. Transcript newLine ! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 15:17:43'!
-printString
-
-	^ self stringRepresentation printString! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 18:45:47'!
-printStringLimitedTo: limit
-	"Answer a String whose characters are a description of the receiver.
-	If you want to print without a character limit, use fullPrintString."
-
-	^self stringRepresentation printAs: String limitedTo: limit! !
-
-!UniString methodsFor: 'printing' stamp: 'KenD 3/31/2013 22:48'!
-stringRepresentation
-
-	"Do what Cuis does in String>>fromUtf8:hex:trimLastNull: "
-	
-	^String streamContents: [:strm | 
-		self codePointsDo: [ :codePoint | 
-			(codePoint < 16rFF) "Single byte?"
-			ifTrue: [ strm nextPut: (codePoint asCharacter ) ]
-			ifFalse: [
-				strm nextPutAll: '&#x'.
-				codePoint printOn: strm base: 16 length: 4 padded: true.
-				strm nextPut: $; 
-			]
-		]
-	]! !
 
 !UniString methodsFor: 'searching' stamp: 'KenD 3/23/2013 19:47'!
 findDelimiters: delimiters startingAt: start 
@@ -4461,35 +4461,6 @@ worldMenuForOpenGroup
 	(arr at: 1) at: #icon put: self searchIcon.
 	^arr! !
 
-!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 16:57'!
-approxWidthOfText: aText
-"Return the width of aText -- quickly, and a little bit dirty. Used by lists morphs containing Text objects to get a quick, fairly accurate measure of the width of a list item."
-
-	"@@@Fixme: Scan for zero, half width codepoints @@@"
-    ^ 16 * (aText size)! !
-
-!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:16'!
-widthOf: aCharacter
-		"@@FIXME: Zero (combining marks, zero width space, ..), 8 (half width :Latin), 16 (full width)"
-	^ self class widthOf: aCharacter ! !
-
-!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:02'!
-widthOfString: aString
-
-
-	^ (1 to: aString size) inject: 0 into: [ :accum :char | accum + (self widthOf: char) ]! !
-
-!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:06'!
-widthOfString: aString from: startIndex to: stopIndex
-	"Measure the length of the given string between start and stop index"
-
-	^ (startIndex to: stopIndex) inject: 0 into: [ :accum :char | accum + (self widthOf: char) ]! !
-
-!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:09'!
-widthOfStringOrText: aStringOrText
-
-	^ self widthOfString: aStringOrText asUniString! !
-
 !UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 17:14'!
 ascent
 
@@ -4539,6 +4510,35 @@ lineSpacing
 pointSize
 
 	^16! !
+
+!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 16:57'!
+approxWidthOfText: aText
+"Return the width of aText -- quickly, and a little bit dirty. Used by lists morphs containing Text objects to get a quick, fairly accurate measure of the width of a list item."
+
+	"@@@Fixme: Scan for zero, half width codepoints @@@"
+    ^ 16 * (aText size)! !
+
+!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:16'!
+widthOf: aCharacter
+		"@@FIXME: Zero (combining marks, zero width space, ..), 8 (half width :Latin), 16 (full width)"
+	^ self class widthOf: aCharacter ! !
+
+!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:02'!
+widthOfString: aString
+
+
+	^ (1 to: aString size) inject: 0 into: [ :accum :char | accum + (self widthOf: char) ]! !
+
+!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:06'!
+widthOfString: aString from: startIndex to: stopIndex
+	"Measure the length of the given string between start and stop index"
+
+	^ (startIndex to: stopIndex) inject: 0 into: [ :accum :char | accum + (self widthOf: char) ]! !
+
+!UniForms methodsFor: 'measuring' stamp: 'KenD 4/6/2013 17:09'!
+widthOfStringOrText: aStringOrText
+
+	^ self widthOfString: aStringOrText asUniString! !
 
 !UniForms methodsFor: 'comparing' stamp: 'KenD 9/5/2016 08:06:50'!
 dominates: otherFontFamilyAndSize
@@ -4749,15 +4749,16 @@ initialize
 	self installMeAsFont. "Fake it"
 	! !
 
-!UniForms class methodsFor: 'class initialization' stamp: 'KenD 4/6/2013 19:26'!
+!UniForms class methodsFor: 'class initialization' stamp: 'jmv 5/5/2019 14:46:23'!
 installMeAsFont
 "
 	UniForms installMeAsFont.
 "
-	| uniFontDict |
-	uniFontDict := Dictionary new.
-	uniFontDict at: 16 put: (self default).
-	AvailableFonts at: 'UniFont' put: uniFontDict.! !
+	| family |
+	family _ StrikeFontFamily new.
+	family familyName: 'UniFont'.
+	family atPointSize: 16 put: self default.
+	FontFamily addFamily: family! !
 
 !UniForms class methodsFor: 'class initialization' stamp: 'KenD 6/1/2016 15:24'!
 readFormsArray: fileName
@@ -7038,12 +7039,6 @@ nextUniCharFromUtf8: anUtf8Stream
 
 	^nil! !
 
-!UniStringWrapper methodsFor: 'conversion' stamp: 'KenD 3/18/2013 15:21'!
-asUniString
-
-	"Answer the UniString I currently wrap"
-	^uniString ! !
-
 !UniStringWrapper methodsFor: 'delegation' stamp: 'KenD 3/21/2013 21:56'!
 at: index
 
@@ -7082,6 +7077,17 @@ stringRepresentation
 
 	^uniString stringRepresentation ! !
 
+!UniStringWrapper methodsFor: 'printing' stamp: 'KenD 3/22/2013 16:39'!
+printString
+
+	^uniString printString ! !
+
+!UniStringWrapper methodsFor: 'conversion' stamp: 'KenD 3/18/2013 15:21'!
+asUniString
+
+	"Answer the UniString I currently wrap"
+	^uniString ! !
+
 !UniStringWrapper methodsFor: 'initialize-release' stamp: 'KenD 3/18/2013 15:24'!
 initialize
 
@@ -7093,11 +7099,6 @@ with: aString
 	"Initialize uniString"
 
 	uniString := aString asUniString.! !
-
-!UniStringWrapper methodsFor: 'printing' stamp: 'KenD 3/22/2013 16:39'!
-printString
-
-	^uniString printString ! !
 
 !UniStringWrapper class methodsFor: 'instance creation' stamp: 'KenD 4/7/2013 09:31'!
 defaultFontClass
