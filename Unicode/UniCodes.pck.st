@@ -1,10 +1,10 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3728] on 5 May 2019 at 3:20:21 pm'!
+'From Cuis 5.0 [latest update: #4074] on 25 March 2020 at 6:50:53 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 54!
-!requires: 'Compression' 1 nil nil!
+!provides: 'UniCodes' 1 55!
 !requires: 'Cuis-Base' 50 3720 nil!
 !requires: 'Goodies' 1 6 nil!
+!requires: 'Compression' 1 nil nil!
 !requires: 'Collections-CompactArrays' 1 4 nil!
 SystemOrganization addCategory: #UniCodes!
 
@@ -863,11 +863,11 @@ encodeDoublingQuoteOn: aStream
 		char == $' ifTrue: [aStream print: char]].
 	aStream print: $'! !
 
-!UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 16:47'!
+!UniString methodsFor: 'printing' stamp: 'jmv 3/24/2020 11:06:02'!
 print
 	"Display self on the Transcript"
 
-	Transcript addEntry: self. Transcript newLine ! !
+	Transcript addEntry: self printString. Transcript newLine ! !
 
 !UniString methodsFor: 'printing' stamp: 'KenD 8/28/2016 15:17:43'!
 printString
@@ -4555,8 +4555,8 @@ isBold
 
 	^ false "NYI"! !
 
-!UniForms methodsFor: 'as yet unclassified' stamp: 'KenD 9/5/2016 15:11:47'!
-on: aGrafPort displayString: aString from: firstIndex to: lastIndex at: p color: color
+!UniForms methodsFor: 'as yet unclassified' stamp: 'jmv 3/24/2020 11:00:19'!
+onBitBltCanvasEngine: engine displayString: aString from: firstIndex to: lastIndex at: p color: color
 	"Show a representation of aString as a DisplayText at location aPoint on aDisplayMedium, using black-colored text."
 
 	| delta |
@@ -4566,7 +4566,7 @@ on: aGrafPort displayString: aString from: firstIndex to: lastIndex at: p color:
 		uniChar _ aString at: index.
 		width _ UniForms widthOf: uniChar.
 		width isZero ifFalse: [
-			aGrafPort copyForm: (UniForms formForCodePoint: uniChar codePoint) to: ((p x + delta) @ (p y)) rule: Form and.
+			engine copyForm: (UniForms formForCodePoint: uniChar codePoint) to: ((p x + delta) @ (p y)) rule: Form and.
 			delta _ delta + width ]]! !
 
 !UniForms class methodsFor: 'private' stamp: 'KenD 4/7/2013 15:33'!
@@ -7313,11 +7313,6 @@ model
 
 	^model
 	! !
-
-!BitBltCanvas methodsFor: '*unicodes' stamp: 'KenD 4/14/2013 21:03'!
-grafPort
-
-	^port! !
 UniString initialize!
 UniLazyString initialize!
 UniSplice initialize!
