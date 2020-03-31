@@ -1,9 +1,9 @@
-'From Cuis 5.0 [latest update: #4074] on 25 March 2020 at 6:50:53 pm'!
+'From Cuis 5.0 [latest update: #4102] on 31 March 2020 at 4:20:55 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 55!
-!requires: 'Cuis-Base' 50 3720 nil!
+!provides: 'UniCodes' 1 56!
 !requires: 'Goodies' 1 6 nil!
+!requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
 !requires: 'Collections-CompactArrays' 1 4 nil!
 SystemOrganization addCategory: #UniCodes!
@@ -834,11 +834,11 @@ editorClassFor: textGetter
 	ifFalse: [ ^ super editorClassFor: textGetter ]
 	ifTrue: [ ^ UniTextEditor ]! !
 
-!UniFileList methodsFor: 'file menu action' stamp: 'KenD 4/12/2013 15:56'!
+!UniFileList methodsFor: 'file menu action' stamp: 'KenD 3/30/2020 15:25:22'!
 getUnicode
 	"Get contents of file again, and display in Unicode. Do this by making the cancel string be the contents, and doing a cancel."
 
-	Cursor read showWhile: [
+	Cursor readCursor showWhile: [
 		brevityState := #needToGetUnicode.  
 		"See method: acceptedStringOrText"
 		self acceptedContentsChanged ]! !
@@ -4276,16 +4276,16 @@ find
 
 "	morph installEditorToReplace: self"! !
 
-!UniTextEditor methodsFor: 'accessing' stamp: 'KenD 9/19/2016 12:19:55'!
+!UniTextEditor methodsFor: 'accessing' stamp: 'KenD 3/30/2020 15:58:09'!
 icon
 
-	^ Theme textEditorIcon! !
+	^ "Theme textEditorIcon" UniForms formForCodePoint: 16r2700! !
 
-!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 9/4/2016 16:37:48'!
+!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 3/30/2020 16:01:02'!
 initialize
 
 	super initialize.
-	self defaultFont: UniForms default! !
+	self defaultFont: "UniForms default" ( FontFamily familyName: 'HanWangMingHeavy' pointSize: 22)! !
 
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 15:02:34'!
 basicCmdShortcutsSpec
@@ -4931,7 +4931,7 @@ textProvider: aTextProvider textGetter: textGetter textSetter: textSetter select
 withText: aTextOrString
 	^self withModel: (UniTextModel withText: aTextOrString asUniString asText)! !
 
-!InnerUniTextMorph methodsFor: 'private' stamp: 'KenD 10/25/2016 14:48:06'!
+!InnerUniTextMorph methodsFor: 'private' stamp: 'KenD 3/30/2020 16:05:26'!
 installEditorAndTextComposition
 	"Install an editor for my textComposition. Install also the textComposition."
 	| e tc |
@@ -4939,7 +4939,7 @@ installEditorAndTextComposition
 	"Editor and TextComposition are assigned here atomically."
 	e _ model editorClass new morph: self.
 	e model: model.
-	e defaultFont: UniForms default.
+	e defaultFont: "UniForms default" (FontFamily familyName: 'HanWangMingHeavy' pointSize: 22).
 	tc _ UniTextComposition new.
 	"Keep critical section short"
 	self mutex critical: [
@@ -5070,9 +5070,9 @@ request: queryString initialAnswer: defaultAnswer centerAt: aPoint onCancelRetur
 	^ aFillInTheBlankMorph getUserResponse
 ! !
 
-!UniTextComposition methodsFor: 'access' stamp: 'KenD 10/25/2016 14:49:38'!
+!UniTextComposition methodsFor: 'access' stamp: 'KenD 3/30/2020 15:22:16'!
 defaultFont
-	^ UniForms default ! !
+	^ "UniForms default" FontFamily familyName: 'HanWangMingHeavy' pointSize: 22! !
 
 !UniChar methodsFor: 'comparing' stamp: 'KenD 2/18/2013 20:30'!
 < aCharacter 
@@ -5683,14 +5683,15 @@ isLetter
 
 	^ (((self generalCategoryCode) bitAnd: LetterBit) = LetterBit)! !
 
-!UniChar methodsFor: 'properties' stamp: 'KenD 3/28/2013 16:45'!
+!UniChar methodsFor: 'properties' stamp: 'KenD 3/31/2020 13:36:30'!
 isLineSeparator
 	"Answer true if Unicode Line Separator OR Smalltalk Line Separator"
 	"Distinguish: isSeparator"
+	"Character newLineCharacter asUniChar isLineSeparator."
 	
 	^ (  "Unicode:  NextLine, LineSeparator, ParagraphSeparator"
  		#( 16r0085 16r2028 16r2029 ) includes: codePoint)
-		"Smalltalk:  LineFeed CarriageReturn FormFeed"
+		     "Smalltalk:  LineFeed CarriageReturn FormFeed"
 		 	or: [(self codePoint < 16rFF) and: [self asCharacter isLineSeparator]] ! !
 
 !UniChar methodsFor: 'properties' stamp: 'KenD 3/7/2013 19:49'!
