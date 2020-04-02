@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4102] on 31 March 2020 at 4:20:55 pm'!
+'From Cuis 5.0 [latest update: #4102] on 2 April 2020 at 2:06:07 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 56!
+!provides: 'UniCodes' 1 57!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -2830,6 +2830,18 @@ nextPut: aThing
 nextPutAll: aCollection
 
 	^ self , (aCollection as: UniString)! !
+
+!UniString methodsFor: 'morphic canvas support' stamp: 'jmv 4/1/2020 12:38:27'!
+displayOnBitBltCanvasEngine: engine from: startIndex to: stopIndex at: p trueTypeFont: aTrueTypeFont color: color
+	"Double dispatch"
+
+	^ engine
+		displayUniString: self
+		from: startIndex
+		to: stopIndex
+		at: p
+		trueTypeFont: aTrueTypeFont
+		color: color! !
 
 !UniString class methodsFor: 'instance creation' stamp: 'KenD 3/18/2013 15:46'!
 crString
@@ -5981,6 +5993,12 @@ rangeInfo3
 ^ #( 'Unassigned' 'Unknown' )
 ! !
 
+!UniChar methodsFor: 'services' stamp: 'jmv 4/1/2020 12:39:04'!
+widthInTrueTypeFontDescription: aTTFontDescription useST80Glyphs: aBoolean
+	"Double dispatch"
+
+	^aTTFontDescription widthOfCodePoint: self codePoint! !
+
 !UniChar class methodsFor: 'private' stamp: 'KenD 3/9/2013 15:23'!
 AI
 	^AL! !
@@ -7300,6 +7318,74 @@ asUniString
 !TextReplaceCommand methodsFor: '*unicodes' stamp: 'KenD 8/29/2016 15:12:26'!
 appendUniStringToNew: aStringOrText
 	new _ new asUniString, aStringOrText! !
+
+!BitBltCanvasEngine methodsFor: '*UniCodes' stamp: 'jmv 4/1/2020 12:37:25'!
+basicDisplayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeFont: aTrueTypeFont
+	"Answer last affected pixel position"
+	| fdestX glyph maxHeight |
+	destY _ aPoint y.
+	fdestX _ aPoint x.
+	maxHeight _ 0.
+	startIndex to: stopIndex do: [ :i | | codePoint |
+		codePoint _ (aUniString at: i) codePoint.
+		Character
+			evaluateOnce: [ :byte1 :byte2 :byte3 :byte4 |
+				glyph _ aTrueTypeFont glyphAtUtf8Byte1: byte1 byte2: byte2 byte3: byte3 byte4: byte4 ]
+			withUtf8BytesOfUnicodeCodePoint: codePoint.
+		destX _ (fdestX + glyph leftOffset) rounded.
+		destY _ aPoint y + aTrueTypeFont ascent + aTrueTypeFont lineGap-1 - glyph topOffset.
+		aTrueTypeFont isSuperscript
+			ifTrue: [destY _ destY - (aTrueTypeFont ascent*0.55)]
+			ifFalse: [
+				aTrueTypeFont isSubscript
+					ifTrue: [destY _ destY + (aTrueTypeFont ascent*0.3)]].
+		sourceForm _ glyph form.
+		height _ sourceForm height.
+		width _ sourceForm width.
+		self copyBits.
+		fdestX _ fdestX + "width + aTrueTypeFont baseKern"glyph advanceWidth.
+		maxHeight _ maxHeight max: height ].
+	^ destX ceiling@(destY+maxHeight)! !
+
+!BitBltCanvasEngine methodsFor: '*UniCodes' stamp: 'jmv 4/1/2020 12:38:08'!
+displayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeFont: aTrueTypeFont color: foregroundColor
+	"If required, do a second pass with new rule and colorMap.
+	Answer last affected pixel position
+	Answer nil if nothing was done
+	"
+
+	| answer prevRule secondPassMap sourceDepth destDepth |
+
+	"Slight optimization when there's nothing to do."
+	clipHeight = 0 ifTrue: [^nil].
+	clipWidth = 0 ifTrue: [^nil].
+
+	"self installStrikeFont: font foregroundColor: (foregroundColor alpha: 1)."
+	sourceForm _ nil. "Set it for each glyph"
+	sourceX _ 0.
+	sourceY _ 0.
+	height _ nil. "Set it for each glyph as sourceForm height".
+	self setRuleAndMapFor: 32 foregroundColor: (foregroundColor alpha: 1).
+
+	"If combinationRule is rgbMul, we might need the special two-pass technique for component alpha blending.
+	If not, do it simply"
+	combinationRule = 37 "rgbMul" ifFalse: [
+		^self basicDisplayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeFont: aTrueTypeFont ].
+	
+	"We need to do a second pass. The colormap set is for use in the second pass."
+	secondPassMap _ colorMap.
+	sourceDepth _ aTrueTypeFont cachedFormDepth.
+	destDepth _ destForm depth.
+	colorMap _ sourceDepth ~= destDepth
+		ifTrue: [ Color cachedColormapFrom: sourceDepth to: destDepth ].
+	answer := self basicDisplayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeFont: aTrueTypeFont.
+	colorMap := secondPassMap.
+	secondPassMap ifNotNil: [
+		prevRule := combinationRule.
+		combinationRule := 20. "rgbAdd"
+		self basicDisplayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeFont: aTrueTypeFont.
+		combinationRule := prevRule ].
+	^answer! !
 
 !FileListWindow class methodsFor: '*unicodes' stamp: 'jmv 6/27/2015 09:56'!
 openUniFileList
