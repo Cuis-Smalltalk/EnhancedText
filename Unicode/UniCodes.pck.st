@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4102] on 2 April 2020 at 2:06:07 pm'!
+'From Cuis 5.0 [latest update: #4106] on 5 April 2020 at 4:40:55 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 57!
+!provides: 'UniCodes' 1 60!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4293,11 +4293,11 @@ icon
 
 	^ "Theme textEditorIcon" UniForms formForCodePoint: 16r2700! !
 
-!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 3/30/2020 16:01:02'!
+!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 4/5/2020 15:03:50'!
 initialize
 
-	super initialize.
-	self defaultFont: "UniForms default" ( FontFamily familyName: 'HanWangMingHeavy' pointSize: 22)! !
+	super initialize. 
+	self defaultFont: ( FontFamily familyName: 'UniFont' pointSize: 12)! !
 
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 15:02:34'!
 basicCmdShortcutsSpec
@@ -5082,9 +5082,10 @@ request: queryString initialAnswer: defaultAnswer centerAt: aPoint onCancelRetur
 	^ aFillInTheBlankMorph getUserResponse
 ! !
 
-!UniTextComposition methodsFor: 'access' stamp: 'KenD 3/30/2020 15:22:16'!
+!UniTextComposition methodsFor: 'access' stamp: 'KenD 4/5/2020 15:03:20'!
 defaultFont
-	^ "UniForms default" FontFamily familyName: 'HanWangMingHeavy' pointSize: 22! !
+	 "UniForms default" 
+	^ FontFamily familyName: 'UniFont' pointSize: 12! !
 
 !UniChar methodsFor: 'comparing' stamp: 'KenD 2/18/2013 20:30'!
 < aCharacter 
@@ -7387,6 +7388,24 @@ displayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeF
 		combinationRule := prevRule ].
 	^answer! !
 
+!TrueTypeFont methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 16:09:46'!
+glyphAt: aCharacter put: aGlyph
+	"Needed only for BitBltCanvasEngine"
+
+	| index |
+	index _ aCharacter numericValue + 1.
+	(index < glyphForms size) ifTrue: [
+		glyphForms at: index put: aGlyph.
+		glyphFormsByUtf8 at: index put: aGlyph.
+	]
+! !
+
+!FontFamily class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 15:01:39'!
+replaceFamilyNamed: aStringName with: newFamily
+
+	self addFamily: newFamily. 
+	AvailableFamilies  at: aStringName put:  newFamily! !
+
 !FileListWindow class methodsFor: '*unicodes' stamp: 'jmv 6/27/2015 09:56'!
 openUniFileList
 	"Answer a FileList which can view Unicode"
@@ -7400,6 +7419,17 @@ model
 
 	^model
 	! !
+
+!TTFontDescription class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 15:02:16'!
+fromFileEntry: aFileEntry familyName: aStringName
+	"
+	TTFontDescription read: DirectoryEntry smalltalkImageDirectory / 'TrueTypeFonts'. 
+	"
+	| ttfont |
+	Descriptions ifNil: [ Descriptions _ Dictionary new ].
+	ttfont _ TTFontReader readTTFFrom: aFileEntry binaryContents.
+	(Descriptions at: aStringName ifAbsentPut: [ Dictionary new]) at: ttfont emphasis put: ttfont.
+	^self withFamilyName: aStringName! !
 UniString initialize!
 UniLazyString initialize!
 UniSplice initialize!
