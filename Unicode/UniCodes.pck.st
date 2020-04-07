@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4106] on 7 April 2020 at 12:48:32 pm'!
+'From Cuis 5.0 [latest update: #4107] on 7 April 2020 at 4:13:14 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 63!
+!provides: 'UniCodes' 1 64!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4677,10 +4677,6 @@ oldArray16FromHexString: aString
 	
 	^ ( coll asArray collect: [ :bits | bits  bitShift: 16] )
 ! !
-
-!UniForms class methodsFor: 'font' stamp: 'KenD 4/6/2013 18:58'!
-default
-	^self new! !
 
 !UniForms class methodsFor: 'accessing' stamp: 'KenD 5/5/2014 21:23'!
 formForCodePoint: aCodePoint

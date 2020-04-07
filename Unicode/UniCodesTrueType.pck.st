@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4106] on 5 April 2020 at 4:41:01 pm'!
+'From Cuis 5.0 [latest update: #4107] on 7 April 2020 at 4:13:23 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 1!
+!provides: 'UniCodesTrueType' 1 2!
 !requires: 'UniCodes' 1 58 nil!
 !requires: 'VectorGraphics' 1 108 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
@@ -60,4 +60,10 @@ prePackageInstall
 	" self prePackageInstall "
 	! !
 UniCodesTrueTypePackage prePackageInstall!
+
+!UniForms class methodsFor: '*unicodestruetype' stamp: 'KenD 4/7/2020 16:11:23'!
+default
+
+	"Answer Unifont 12p for UniCodesTrueType"
+	^ FontFamily familyName: 'Unifont' pointSize: 12! !
 UniCodesTrueTypePackage postPackageInstall!
