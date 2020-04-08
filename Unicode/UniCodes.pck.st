@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4107] on 7 April 2020 at 4:13:14 pm'!
+'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 12:14:45 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 64!
+!provides: 'UniCodes' 1 65!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4293,11 +4293,11 @@ icon
 
 	^ "Theme textEditorIcon" UniForms formForCodePoint: 16r2700! !
 
-!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 4/5/2020 15:03:50'!
+!UniTextEditor methodsFor: 'initialization' stamp: 'KenD 4/8/2020 12:10:54'!
 initialize
 
 	super initialize. 
-	self defaultFont: ( FontFamily familyName: 'UniFont' pointSize: 12)! !
+	self defaultFont: ( FontFamily familyName: 'Unifont' pointSize: 12)! !
 
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 15:02:34'!
 basicCmdShortcutsSpec
@@ -4503,10 +4503,10 @@ emphasized: code
 	"@@Fixme: BOGUS@@"
 	^ self! !
 
-!UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 19:13'!
+!UniForms methodsFor: 'accessing' stamp: 'KenD 4/8/2020 12:10:45'!
 familyName
 
-	^'UniFont'! !
+	^'Unifont'! !
 
 !UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 17:11'!
 height
@@ -4757,14 +4757,14 @@ initialize
 	self installMeAsFont. "Fake it"
 	! !
 
-!UniForms class methodsFor: 'class initialization' stamp: 'jmv 5/5/2019 14:46:23'!
+!UniForms class methodsFor: 'class initialization' stamp: 'KenD 4/8/2020 12:09:09'!
 installMeAsFont
 "
 	UniForms installMeAsFont.
 "
 	| family |
 	family _ StrikeFontFamily new.
-	family familyName: 'UniFont'.
+	family familyName: 'Unifont'.
 	family atPointSize: 16 put: self default.
 	FontFamily addFamily: family! !
 
@@ -5078,10 +5078,10 @@ request: queryString initialAnswer: defaultAnswer centerAt: aPoint onCancelRetur
 	^ aFillInTheBlankMorph getUserResponse
 ! !
 
-!UniTextComposition methodsFor: 'access' stamp: 'KenD 4/5/2020 15:03:20'!
+!UniTextComposition methodsFor: 'access' stamp: 'KenD 4/8/2020 12:11:01'!
 defaultFont
 	 "UniForms default" 
-	^ FontFamily familyName: 'UniFont' pointSize: 12! !
+	^ FontFamily familyName: 'Unifont' pointSize: 12! !
 
 !UniChar methodsFor: 'comparing' stamp: 'KenD 2/18/2013 20:30'!
 < aCharacter 

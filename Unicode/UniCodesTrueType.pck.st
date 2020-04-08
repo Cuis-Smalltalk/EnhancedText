@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4107] on 7 April 2020 at 4:43:56 pm'!
+'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 12:14:50 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 3!
+!provides: 'UniCodesTrueType' 1 4!
 !requires: 'UniCodes' 1 58 nil!
 !requires: 'VectorGraphics' 1 108 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
@@ -44,21 +44,22 @@ doFontSurgery
 	unifont glyphAt: (Character lf) put: spaceFormGlyph.
 	! !
 
-!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/5/2020 16:40:45'!
+!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/8/2020 12:14:22'!
 prePackageInstall
 	"Load default unicode TrueType font.
 	Currently from: 
 	http://unifoundry.com/pub/unifont/unifont-13.0.01/font-builds/unifont-13.0.01.ttf"
 
-	"Replace UniForms StrikeFont 'UniFont' "
+	"Replace UniForms StrikeFont 'Unifont' "
 	| unifontDesc baseDesc unifamily |
+	Preferences disable: #loadOnlyLatinGlyphData.
 	unifontDesc := TTFontDescription 
 		fromFileEntry: (self package fullFileName asFileEntry parent // 'unifont-13.0.01.ttf') 
 		familyName: 'Unifont'.
 	baseDesc := unifontDesc at: 0.
 	unifamily _ TrueTypeFontFamily baseTTFontDescription: baseDesc.
 
-	FontFamily replaceFamilyNamed: 'UniFont' with: unifamily.
+	FontFamily replaceFamilyNamed: 'Unifont' with: unifamily.
 	self doFontSurgery. "@@FIXME!!@@"
 	DisplayScreen runningWorld ifNotNil: [ :world | world fontPreferenceChanged ].
 	" self prePackageInstall "
