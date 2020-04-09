@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 12:14:45 pm'!
+'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 4:55:05 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 65!
+!provides: 'UniCodes' 1 67!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4299,6 +4299,22 @@ initialize
 	super initialize. 
 	self defaultFont: ( FontFamily familyName: 'Unifont' pointSize: 12)! !
 
+!UniTextEditor methodsFor: 'attributes' stamp: 'KenD 4/8/2020 16:18:16'!
+offerFontMenu
+	"Present a menu of available TrueType fonts, and if one is chosen, apply it to the current selection."
+	"This is a user command, and generates undo"
+
+	| curFont newFont attr startIndex |
+	startIndex _ self startIndex.
+	curFont _ model actualContents fontAt: startIndex default: defaultFont.
+	newFont _ TrueTypeFont fromUser: curFont.
+	newFont ifNil: [ ^self ].
+	attr _ TextFontFamilyAndSize
+			familyName: newFont familyName
+			pointSize: newFont pointSize.
+	self applyAttribute: attr.
+	morph updateFromTextComposition.! !
+
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 15:02:34'!
 basicCmdShortcutsSpec
 	"
@@ -7514,10 +7530,10 @@ glyphAt: aCharacter put: aGlyph
 	]
 ! !
 
-!FontFamily class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 15:01:39'!
+!FontFamily class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/8/2020 16:54:22'!
 replaceFamilyNamed: aStringName with: newFamily
 
-	self addFamily: newFamily. 
+	"self addFamily: newFamily. "
 	AvailableFamilies  at: aStringName put:  newFamily! !
 
 !FileListWindow class methodsFor: '*unicodes' stamp: 'jmv 6/27/2015 09:56'!

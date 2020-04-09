@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 12:14:50 pm'!
+'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 4:34:55 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 4!
+!provides: 'UniCodesTrueType' 1 5!
 !requires: 'UniCodes' 1 58 nil!
 !requires: 'VectorGraphics' 1 108 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
@@ -65,6 +65,40 @@ prePackageInstall
 	" self prePackageInstall "
 	! !
 UniCodesTrueTypePackage prePackageInstall!
+
+!TrueTypeFont class methodsFor: '*unicodestruetype' stamp: 'KenD 4/8/2020 16:34:26'!
+fromUser: priorFont
+	"
+	TrueTypeFont fromUser
+	"
+	"Present a menu of available TrueType fonts, and if one is chosen, return it.
+	Otherwise return nil.
+	Show only baseFonts i.e. FamilyName, pointSize (but do not include emphasis, such as italic or bold)"
+
+	| fontList fontMenu active ptMenu label spec |
+	fontList := (AbstractFont familyNames) select: [ :ffname | (FontFamily familyNamed: ffname) class = TrueTypeFontFamily ].
+	fontMenu := MenuMorph new defaultTarget: self.
+	fontList do: [:fontName | 
+			active := priorFont familyName sameAs: fontName.
+			ptMenu := MenuMorph new defaultTarget: self.
+			(AbstractFont pointSizesFor: fontName ) do: [ :pt | 
+					(active and: [pt = priorFont pointSize]) 
+						ifTrue: [label := '<on>']
+						ifFalse: [label := '<off>'].
+					label := label , pt printString , ' pt'.
+					ptMenu 
+						add: label
+						target: fontMenu
+						action: #modalSelection:
+						argument: { 
+								fontName.
+								pt}].
+			active ifTrue: [label := '<on>'] ifFalse: [label := '<off>'].
+			label := label , fontName.
+			fontMenu add: label subMenu: ptMenu].
+	spec := fontMenu invokeModal.
+	spec ifNil: [^nil].
+	^AbstractFont familyName: spec first pointSize: spec last! !
 
 !UniForms class methodsFor: '*unicodestruetype' stamp: 'KenD 4/7/2020 16:11:23'!
 default
