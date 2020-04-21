@@ -1,9 +1,8 @@
-'From Cuis 5.0 [latest update: #4119] on 21 April 2020 at 12:57:15 pm'!
+'From Cuis 5.0 [latest update: #4119] on 21 April 2020 at 1:10:41 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 7!
+!provides: 'UniCodesTrueType' 1 8!
 !requires: 'UniCodes' 1 58 nil!
-!requires: 'Cuis-Base' 50 4119 nil!
-!requires: 'VectorGraphics' 1 108 nil!
+!requires: 'VectorGraphics' 1 125 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
 
 
