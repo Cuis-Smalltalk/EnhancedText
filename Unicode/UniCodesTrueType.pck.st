@@ -1,7 +1,8 @@
-'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 4:34:55 pm'!
+'From Cuis 5.0 [latest update: #4119] on 21 April 2020 at 12:57:15 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 5!
+!provides: 'UniCodesTrueType' 1 7!
 !requires: 'UniCodes' 1 58 nil!
+!requires: 'Cuis-Base' 50 4119 nil!
 !requires: 'VectorGraphics' 1 108 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
 
@@ -24,27 +25,7 @@ UniTextEditor openFromFileEntry:
 	((CodePackage packageOfClass: UniCodesTrueTypePackage ifNone: nil) fullFileName 
 		asFileEntry parent // 'utf8sampler.txt').!
 
-!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/5/2020 16:40:03'!
-doFontSurgery
-
-	"Fix display of Space and LineFeed for 12 point Unifont"
-	| pointSize unifont vfont ch spaceGlyph spaceFormGlyph |
-	pointSize := 12.
-	unifont := FontFamily familyName: 'Unifont' pointSize: pointSize.
-	vfont := FontFamily familyName: 'DejaVu' pointSize: pointSize.
-	ch := UniChar fromCodePoint: 32.
-	unifont glyphAt: ch.
-	spaceGlyph := vfont glyphAt: (Character codePoint: 32).
-	spaceFormGlyph := FormGlyph 
-								form: spaceGlyph 
-								leftOffset: 0 
-								topOffset: 0 
-								advanceWidth: spaceGlyph width.
-	unifont glyphAt: (Character space) put: spaceFormGlyph.
-	unifont glyphAt: (Character lf) put: spaceFormGlyph.
-	! !
-
-!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/8/2020 12:14:22'!
+!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/21/2020 12:55:27'!
 prePackageInstall
 	"Load default unicode TrueType font.
 	Currently from: 
@@ -60,7 +41,6 @@ prePackageInstall
 	unifamily _ TrueTypeFontFamily baseTTFontDescription: baseDesc.
 
 	FontFamily replaceFamilyNamed: 'Unifont' with: unifamily.
-	self doFontSurgery. "@@FIXME!!@@"
 	DisplayScreen runningWorld ifNotNil: [ :world | world fontPreferenceChanged ].
 	" self prePackageInstall "
 	! !
