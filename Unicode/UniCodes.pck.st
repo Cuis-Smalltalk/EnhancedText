@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4108] on 8 April 2020 at 4:55:05 pm'!
+'From Cuis 5.0 [latest update: #4119] on 22 April 2020 at 1:27:22 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 67!
+!provides: 'UniCodes' 1 68!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -814,13 +814,14 @@ editorClass
 
 	^ UniTextEditor! !
 
-!UniFileList methodsFor: 'file list menu' stamp: 'KenD 4/12/2013 15:47'!
+!UniFileList methodsFor: 'file list menu' stamp: 'KenD 4/22/2020 13:23:11'!
 itemsForAnyFile2
 	"Answer a list of universal services that could apply to any file"
 	
 	| services |
 	services := super itemsForAnyFile2.
 	services addFirst: self serviceGetUnicode.
+	services addFirst: UniTextEditor serviceUniTextEdit.
 	^services
 
 ! !
@@ -843,14 +844,16 @@ getUnicode
 		"See method: acceptedStringOrText"
 		self acceptedContentsChanged ]! !
 
-!UniFileList methodsFor: 'own services' stamp: 'KenD 4/12/2013 14:42'!
+!UniFileList methodsFor: 'own services' stamp: 'KenD 4/22/2020 13:07:01'!
 serviceGetUnicode
 
 	^  (SimpleServiceEntry 
 			provider: self 
 			label: 'view as Unicode' 
 			selector: #getUnicode
-			description: 'view as Unicode')
+			description: 'view as Unicode'
+			icon: ((Theme content from: 'Theme' get: {'16x16'. 'apps'}) at:  'preferences-desktop-font.png')
+			)
 			! !
 
 !UniString methodsFor: 'printing' stamp: 'KenD 3/18/2013 21:00'!
@@ -4401,17 +4404,18 @@ fileReaderServicesForFile: filename suffix: suffix
 
 	^#()! !
 
-!UniTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 8/27/2016 14:03:25'!
+!UniTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 4/22/2020 13:19:29'!
 serviceUniTextEdit
-	"Answer the service of opening a file in a RopeTextEditor"
+	"Answer the service of opening a file in a UniTextEditor"
 
 	^ (SimpleServiceEntry
 		provider: self 
 		label: 'open a Unicode text file'
 		selector: #openFromFileEntry:
 		description: 'open this file with a Unicode Text Editor'
-		buttonLabel: 'Unicode Text Edit')
-		argumentGetter: [ :fileList | fileList selectedFileEntry ]! !
+		buttonLabel: 'Unicode Text Edit'
+		icon: ((Theme content from: 'Theme' get: {'16x16'. 'apps'}) at: 'accessories-text-editor.png')
+		) argumentGetter: [ :fileList | fileList selectedFileEntry ]! !
 
 !UniTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 8/27/2016 14:02:39'!
 unload
