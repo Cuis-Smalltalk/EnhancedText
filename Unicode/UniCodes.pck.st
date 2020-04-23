@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4119] on 22 April 2020 at 1:27:22 pm'!
+'From Cuis 5.0 [latest update: #4120] on 23 April 2020 at 2:03:51 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 68!
+!provides: 'UniCodes' 1 69!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4397,6 +4397,15 @@ findText
 
 !UniTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 8/27/2016 14:04:37'!
 fileReaderServicesForFile: filename suffix: suffix
+	"FileList buttons that open a UnicodeText Editor on contents."
+
+	(#('utf8' 'txt') includes: suffix) ifTrue: [
+		^ { self serviceUniTextEdit } ].
+
+	^#()! !
+
+!UniTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 4/23/2020 13:52:20'!
+fileReaderServicesForFileEntry: filename suffix: suffix
 	"FileList buttons that open a UnicodeText Editor on contents."
 
 	(#('utf8' 'txt') includes: suffix) ifTrue: [
