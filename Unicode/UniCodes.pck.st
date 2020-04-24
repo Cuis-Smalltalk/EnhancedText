@@ -1,7 +1,7 @@
-'From Cuis 5.0 [latest update: #4120] on 23 April 2020 at 2:03:51 pm'!
+'From Cuis 5.0 [latest update: #4120] on 24 April 2020 at 2:50:04 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 69!
+!provides: 'UniCodes' 1 70!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Compression' 1 nil nil!
@@ -4225,13 +4225,11 @@ save
 		 ifNil: [ self saveAs ].
 	^true! !
 
-!UniTextEditor methodsFor: 'editing keys' stamp: 'KenD 9/11/2016 16:03:34'!
+!UniTextEditor methodsFor: 'editing keys' stamp: 'KenD 4/24/2020 14:47:31'!
 save: aKeyboardEvent
 	"Save keystroke"
-"	^self save "
-
-	self acceptContents.
-	^ true! !
+	
+	^self save! !
 
 !UniTextEditor methodsFor: 'editing keys' stamp: 'KenD 9/15/2016 14:06:50'!
 saveAs
@@ -4291,10 +4289,10 @@ find
 
 "	morph installEditorToReplace: self"! !
 
-!UniTextEditor methodsFor: 'accessing' stamp: 'KenD 3/30/2020 15:58:09'!
+!UniTextEditor methodsFor: 'accessing' stamp: 'KenD 4/23/2020 14:33:06'!
 icon
 
-	^ "Theme textEditorIcon" UniForms formForCodePoint: 16r2700! !
+	^ ((Theme content from: 'Theme' get: {'16x16'. 'apps'}) at: 'accessories-text-editor.png')! !
 
 !UniTextEditor methodsFor: 'initialization' stamp: 'KenD 4/8/2020 12:10:54'!
 initialize
@@ -4318,7 +4316,142 @@ offerFontMenu
 	self applyAttribute: attr.
 	morph updateFromTextComposition.! !
 
-!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 15:02:34'!
+!UniTextEditor methodsFor: 'menu' stamp: 'KenD 4/24/2020 14:41:52'!
+addCutAndPasteMenuSectionTo: aMenu
+	"Adds  typical cut and paste operations section to a menu"
+	
+	aMenu
+		add: 'Copy (c)'
+		action: #copySelection
+		icon: #copyIcon.
+	
+	aMenu
+		add: 'Cut (x)'
+		action: #cut
+		icon: #cutIcon.
+
+	aMenu
+		add: 'Paste (v)'
+		action: #paste
+		icon: #pasteIcon.
+		
+	aMenu
+		add: 'Paste without Format'
+		action: #pasteString
+		icon: #pasteIcon.
+	
+	aMenu
+		add: 'Paste...'
+		action: #pasteRecent
+		icon: #worldIcon.
+	
+	^aMenu! !
+
+!UniTextEditor methodsFor: 'menu' stamp: 'KenD 4/24/2020 14:43:22'!
+addFinderMenuSectionTo: aMenu
+	"Build a submenu with finding related operations"
+	
+	aMenu addItemsFromDictionaries:
+	 `{
+			{
+				#label 			-> 		'Find...(f)'.
+				#selector 		-> 		#find.
+				#icon 			-> 		#findIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Find Again (g)'.
+				#selector 		-> 		#findAgain.
+				#icon 			-> 		#systemIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Use Selection for Find (j)'.
+				#selector 		-> 		#setSearchString.
+				#icon 			-> 		#saveAsIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Select All (a)'.
+				#selector 		-> 		#selectAll.
+				#icon 			-> 		#selectAllIcon
+			} asDictionary.
+
+		}`.
+		^aMenu! !
+
+!UniTextEditor methodsFor: 'menu' stamp: 'KenD 4/24/2020 14:40:05'!
+addSaveMenuSectionTo: aMenu
+	"Adds to the given menu text saving related operations"
+	
+	aMenu
+		addItemsFromDictionaries: 
+	`{
+		{
+				#label 			-> 		'Save'.
+				#selector 		-> 		#save.
+				#icon 			-> 		#saveIcon
+			} asDictionary.
+			{
+				#label 			-> 		'SaveAs..'.
+				#selector 		-> 		#saveAs.
+				#icon 			-> 		#saveAsIcon
+			} asDictionary.
+		}`.
+		^aMenu! !
+
+!UniTextEditor methodsFor: 'menu' stamp: 'KenD 4/24/2020 14:34:29'!
+addStyleMenuSectionTo: aMenu
+	"Adds to the given menu text styiling related operations"
+	
+	aMenu
+		addItemsFromDictionaries: 
+	`{
+		{
+				#label 			-> 		'Toggle WordWrap'.
+				#selector 		-> 		#wrapOnOff.
+				#icon 			-> 		#genericTextIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Set Font... (k)'.
+				#selector 		-> 		#offerFontMenu.
+				#icon 			-> 		#preferencesDesktopFontIcon
+			} asDictionary.
+			{
+				#label 			-> 		'Set Alignment...'.
+				#selector 		-> 		#chooseAlignment.
+				#icon 			-> 		#formatJustifyLeftIcon
+			} asDictionary.
+		}`.
+		^aMenu! !
+
+!UniTextEditor methodsFor: 'menu' stamp: 'KenD 4/24/2020 14:40:56'!
+getMenu
+	| aMenu | 
+	aMenu _ MenuMorph new defaultTarget: self.
+	aMenu
+		addTitle: self class name;
+		addStayUpIcons.
+		
+	aMenu
+		add: 'Help...'
+		action: #openHelp
+		icon: #helpIcon.
+	aMenu addLine.
+	
+	self addSaveMenuSectionTo: aMenu.
+	aMenu addLine.
+
+		
+	self addFinderMenuSectionTo: aMenu.
+	self addUndoMenuSectionTo: aMenu.
+	aMenu addLine.
+	
+	self addCutAndPasteMenuSectionTo: aMenu.
+	aMenu addLine.
+	
+	self addStyleMenuSectionTo: aMenu.
+	
+	^aMenu ! !
+
+!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/24/2020 13:32:53'!
 basicCmdShortcutsSpec
 	"
 	Editor initialize
@@ -4337,18 +4470,21 @@ basicCmdShortcutsSpec
 		#(		$c 	#copySelection:		'Copy selection to the Clipboard')
 		#(		$v 	#paste:					'Paste Clipboard contents')
 
-		#(		$Z	#redo:					'Redo (multiple levels)')
+		#(		$H		#cursorTopHome:		'Move cursor to start of text')
+		#(		$Z		#redo:					'Redo (multiple levels)')
 	)! !
 
-!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/28/2016 14:59:14'!
+!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/24/2020 13:45:37'!
 cmdShortcutsSpec
 	"
 	UniTextEditor initialize.
 	"
 	"arranged in QWERTY keyboard order"
 	^#(
-		#(		$s	#save:						'Save (i.e. accept)')
-		#(		$u	#align:						'Toggle alignment')
+		#(		$8	#offerColorMenu:		'Change color')
+		#(		$k	#offerFontMenu:		'Set font')
+		#(		$s	#save:					'Save (i.e. accept)')
+		#(		$u	#align:					'Toggle alignment')
 	)! !
 
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/27/2016 16:04:42'!
@@ -4381,6 +4517,11 @@ initializeMenu
 		{'Toggle WordWrap'.			#wrapOnOff}.
 		{'Set Alignment...'.				#chooseAlignment}.
 	}! !
+
+!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/24/2020 13:26:29'!
+shiftShortcutsSpec
+
+	^#()! !
 
 !UniTextEditor class methodsFor: 'cached state access' stamp: 'KenD 10/25/2016 15:04:51'!
 changeText
