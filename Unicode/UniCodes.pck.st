@@ -1,9 +1,10 @@
-'From Cuis 5.0 [latest update: #4120] on 24 April 2020 at 2:50:04 pm'!
+'From Cuis 5.0 [latest update: #4126] on 29 April 2020 at 3:24:10 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 70!
+!provides: 'UniCodes' 1 81!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
+!requires: 'Morphic-Misc1' 1 149 nil!
 !requires: 'Compression' 1 nil nil!
 !requires: 'Collections-CompactArrays' 1 4 nil!
 SystemOrganization addCategory: #UniCodes!
@@ -137,6 +138,16 @@ TextModelMorph subclass: #UniTextModelMorph
 	category: 'UniCodes'!
 !classDefinition: 'UniTextModelMorph class' category: #UniCodes!
 UniTextModelMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #UniCharEntryMorph category: #UniCodes!
+LayoutMorph subclass: #UniCharEntryMorph
+	instanceVariableNames: 'label char hex button editor'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UniCodes'!
+!classDefinition: 'UniCharEntryMorph class' category: #UniCodes!
+UniCharEntryMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #InnerUniTextMorph category: #UniCodes!
@@ -320,6 +331,11 @@ aMorph openInWorld .
 
 !UniTextModelMorph commentStamp: '<historical>' prior: 0!
 A TextModelMorph which does not squash font.!
+
+!UniCharEntryMorph commentStamp: '<historical>' prior: 0!
+I am a LayoutMorph Row which displays a Unicode char and hex codePoint.
+One may enter the hex value of a Unicode codePoint and it will be displayed.
+One may then paste the corresponding UniChar into a UniString.!
 
 !InnerUniTextMorph commentStamp: '<historical>' prior: 0!
 An InnerTextMorph which does not squash the font.!
@@ -711,10 +727,10 @@ fromUser
 	
 	^ textModel! !
 
-!UniTextModel class methodsFor: 'instance creation' stamp: 'KenD 8/27/2016 14:54:23'!
+!UniTextModel class methodsFor: 'instance creation' stamp: 'KenD 4/27/2020 16:59:35'!
 openLabel: aString
 
-	self new openLabel: aString! !
+	^self new :: openLabel: aString; yourself! !
 
 !UniFileList methodsFor: 'contents' stamp: 'KenD 5/5/2014 21:58'!
 acceptedContents
@@ -4487,37 +4503,6 @@ cmdShortcutsSpec
 		#(		$u	#align:					'Toggle alignment')
 	)! !
 
-!UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 8/27/2016 16:04:42'!
-initializeMenu
-	"Initialize the mouseButton2 (right button) pop-up menu and corresponding messages."
-	"
-	UniTextEditor initializeMenu.
-	"
-
-	menu _ SelectionMenu fromArray: {
-		{'Help...'.						#openHelp}.
-		#-.
-		{'Save (s)'.						#save}.
-		{'SaveAs...'.					#saveAs}.
-		#-.
-		{'Find...(f)'.						#find}.
-		{'Find Again (g)'.				#findAgain}.
-		{'Use Selection for Find (j)'.	#setSearchString}.
-		#-.
-		{'Undo - multiple (z)'.			#undo}.
-		{'Redo - multiple (Z)'.			#redo}.
-		{'Undo / Redo history'.		#offerUndoHistory}.
-		#-.
-		{'Copy (c)'.						#copySelection}.
-		{'Cut (x)'.						#cut}.
-		{'Paste (v)'.					#paste}.
-		{'Paste without Format'.		#pasteString}.
-		{'Paste...'.						#pasteRecent}.
-		#-.
-		{'Toggle WordWrap'.			#wrapOnOff}.
-		{'Set Alignment...'.				#chooseAlignment}.
-	}! !
-
 !UniTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/24/2020 13:26:29'!
 shiftShortcutsSpec
 
@@ -4575,6 +4560,27 @@ unload
 
 	FileList unregisterFileReader: self ! !
 
+!UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 4/29/2020 13:32:15'!
+addHexEntryMorphTo: aSystemWindow
+	"Answer a the Editor's SystemWindow with a hex entry panel"
+
+	| editor hexEntryMorph |	
+	"Interestingly, when creating TextEditor SystemWindow, there is no accessor for the editor.  
+	 The first submorph of the SystemWindow's LayoutMorph is a TextModelMorph. 
+	 The last submorph of the TextModelMorph is an  InnerTextMorph.
+	 The InnerTextMorph knows the editor to talk to."
+	editor := aSystemWindow layoutMorph submorphs first submorphs last editor.
+	hexEntryMorph := 
+		UniCharEntryMorph 
+				label: 'Unicode  hex' 
+		  		value: 16r4E7E "First hexagram of I Ching: the Creative"
+		 		buttonCaption: 'Paste'					
+		 	 	buttonTarget: editor
+		  		buttonAction: #pasteChar.
+	hexEntryMorph layoutSpec: (LayoutSpec proportionalWidth: 1.0 fixedHeight: 30).
+	aSystemWindow layoutMorph addMorph: hexEntryMorph.
+	^aSystemWindow! !
+
 !UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 8/27/2016 14:11:33'!
 fromFile: aFileNameString
 "
@@ -4593,34 +4599,30 @@ fromUser
 "
 	UniTextModel fromUser! !
 
-!UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 9/15/2016 14:09:41'!
+!UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 4/29/2020 13:35:18'!
 openFromFileEntry: fileEntry
 
 	| model fileName  |
 	fileName := fileEntry pathName.
 	model := UniTextModel fromFile: fileName.
 	model isNil ifFalse: [
-		SystemWindow 
-			editText: model
-			label: model labelString
-			wrap: true.
+		self addHexEntryMorphTo: 
+			(SystemWindow 
+				editText: model
+				label: model labelString
+				wrap: true)
 	]! !
 
-!UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 8/27/2016 14:08:55'!
+!UniTextEditor class methodsFor: 'instance creation' stamp: 'KenD 4/29/2020 13:34:22'!
 openTextEditor
 
-	UniTextModel openLabel: 'Unicode Editor'! !
-
-!UniTextEditor class methodsFor: 'class initialization' stamp: 'KenD 8/27/2016 14:05:10'!
-initialize
-
-"
-	UniTextEditor initialize.
-"
-	super initialize.
-	self initializeMenu.
-	FileList registerFileReader: self.
-	! !
+	"Open an empty UniTextEditor"
+	| sysWindow |
+	sysWindow := SystemWindow 
+						editText: (UniTextModel withText: (UniString  newLineString))
+						label: 'Unicode Text Editor' 
+						wrap: true.
+	^ self addHexEntryMorphTo: sysWindow! !
 
 !UniTextEditor class methodsFor: 'menu-world' stamp: 'KenD 1/20/2019 17:01:01'!
 searchIcon
@@ -4677,6 +4679,11 @@ emphasized: code
 familyName
 
 	^'Unifont'! !
+
+!UniForms methodsFor: 'accessing' stamp: 'KenD 4/29/2020 14:54:10'!
+formForCodePoint: aCodePoint
+
+	^ self class formForCodePoint: aCodePoint! !
 
 !UniForms methodsFor: 'accessing' stamp: 'KenD 4/6/2013 17:11'!
 height
@@ -4848,6 +4855,12 @@ oldArray16FromHexString: aString
 	^ ( coll asArray collect: [ :bits | bits  bitShift: 16] )
 ! !
 
+!UniForms class methodsFor: 'accessing' stamp: 'KenD 4/29/2020 14:51:49'!
+default
+
+	"Answer Unifont 16p for UniCodesTrueType"
+	^ FontFamily familyName: 'Unifont' pointSize: 16! !
+
 !UniForms class methodsFor: 'accessing' stamp: 'KenD 5/5/2014 21:23'!
 formForCodePoint: aCodePoint
 
@@ -4927,15 +4940,15 @@ initialize
 	self installMeAsFont. "Fake it"
 	! !
 
-!UniForms class methodsFor: 'class initialization' stamp: 'KenD 4/8/2020 12:09:09'!
+!UniForms class methodsFor: 'class initialization' stamp: 'KenD 4/29/2020 15:22:08'!
 installMeAsFont
 "
 	UniForms installMeAsFont.
 "
 	| family |
-	family _ StrikeFontFamily new.
+	family := StrikeFontFamily new.
 	family familyName: 'Unifont'.
-	family atPointSize: 16 put: self default.
+	family atPointSize: 16 put: self new.
 	FontFamily addFamily: family! !
 
 !UniForms class methodsFor: 'class initialization' stamp: 'KenD 6/1/2016 15:24'!
@@ -5108,6 +5121,84 @@ textProvider: aTextProvider textGetter: textGetter textSetter: textSetter select
 !UniTextModelMorph class methodsFor: 'instance creation' stamp: 'KenD 9/9/2016 14:07:11'!
 withText: aTextOrString
 	^self withModel: (UniTextModel withText: aTextOrString asUniString asText)! !
+
+!UniCharEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/27/2020 13:46:07'!
+button
+
+	^button! !
+
+!UniCharEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/27/2020 13:46:36'!
+char
+
+	^char! !
+
+!UniCharEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/27/2020 13:47:14'!
+hexEntry
+
+	^hex! !
+
+!UniCharEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/27/2020 13:45:53'!
+label
+
+	^label! !
+
+!UniCharEntryMorph methodsFor: 'event handling' stamp: 'KenD 4/29/2020 08:24:55'!
+pasteChar
+
+	| replacementString |
+	replacementString := (UniChar fromCodePoint: hex value) asUniString asText.
+	editor clipboardTextPut: replacementString; paste
+	"editor replaceSelectionWith: replacementString"! !
+
+!UniCharEntryMorph methodsFor: 'event handling' stamp: 'KenD 4/28/2020 16:23:26'!
+showCodepoint
+
+	"Update display based on hex input"
+	char image: (UniForms default formForCodePoint: hex value); redrawNeeded! !
+
+!UniCharEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/29/2020 08:31:34'!
+label: aString value: aCodePoint buttonCaption: aButtonString buttonTarget: target buttonAction: aSymbol
+	"<label> [hex.]  [C] (<caption>)"
+
+	label := LabelMorph contents: aString.
+	char := ImageMorph new :: image: (UniForms default formForCodePoint: aCodePoint).
+	hex := SimpleNumberEntryMorph new ::
+				legalChars: '1234567890ABCDEFabcdef'
+		    	numCharsToHold: 4 
+				value: aCodePoint 
+				validator: [ :str | 
+					(str size <= 4)
+						ifTrue: [ | newVal | 
+							[ newVal := ('16r', str asUppercase) asNumber ] on: Error do: [ nil ].
+							newVal ifNotNil: [ self showCodepoint ].
+							newVal
+						]
+						ifFalse: [ nil ]
+				]
+				toString: [ :n | n printStringHex ].
+	button := PluggableButtonMorph model: self action: aSymbol label: aButtonString.
+	editor := target.
+	self beRow; 
+		separation: 20@10;
+		color: (Theme current defaultWindowColor) lighter;
+		addMorph: label;
+		addMorph: hex;
+		addMorph: char;
+		addMorph: button;
+		morphExtent: (self minimumExtent);
+	yourself
+	! !
+
+!UniCharEntryMorph class methodsFor: 'instance creation' stamp: 'KenD 4/27/2020 14:41:48'!
+label: aString value: aCodePoint buttonCaption: aButtonString buttonTarget: target buttonAction: aSymbol
+
+	^self newRow ::
+		label: aString 
+		value: aCodePoint 
+		buttonCaption: aButtonString 
+		buttonTarget: target 
+		buttonAction: aSymbol
+! !
 
 !InnerUniTextMorph methodsFor: 'private' stamp: 'KenD 3/30/2020 16:05:26'!
 installEditorAndTextComposition
@@ -7672,18 +7763,6 @@ displayUniString: aUniString from: startIndex to: stopIndex at: aPoint trueTypeF
 		combinationRule := prevRule ].
 	^answer! !
 
-!TrueTypeFont methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 16:09:46'!
-glyphAt: aCharacter put: aGlyph
-	"Needed only for BitBltCanvasEngine"
-
-	| index |
-	index _ aCharacter numericValue + 1.
-	(index < glyphForms size) ifTrue: [
-		glyphForms at: index put: aGlyph.
-		glyphFormsByUtf8 at: index put: aGlyph.
-	]
-! !
-
 !FontFamily class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/8/2020 16:54:22'!
 replaceFamilyNamed: aStringName with: newFamily
 
@@ -7703,20 +7782,8 @@ model
 
 	^model
 	! !
-
-!TTFontDescription class methodsFor: '*unicodes-truetype' stamp: 'KenD 4/5/2020 15:02:16'!
-fromFileEntry: aFileEntry familyName: aStringName
-	"
-	TTFontDescription read: DirectoryEntry smalltalkImageDirectory / 'TrueTypeFonts'. 
-	"
-	| ttfont |
-	Descriptions ifNil: [ Descriptions _ Dictionary new ].
-	ttfont _ TTFontReader readTTFFrom: aFileEntry binaryContents.
-	(Descriptions at: aStringName ifAbsentPut: [ Dictionary new]) at: ttfont emphasis put: ttfont.
-	^self withFamilyName: aStringName! !
 UniString initialize!
 UniLazyString initialize!
 UniSplice initialize!
-UniTextEditor initialize!
 UniForms initialize!
 UniChar initialize!

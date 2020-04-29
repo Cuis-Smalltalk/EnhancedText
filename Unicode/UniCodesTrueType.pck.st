@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4119] on 21 April 2020 at 1:10:41 pm'!
+'From Cuis 5.0 [latest update: #4126] on 29 April 2020 at 2:54:38 pm'!
 'Description Replace UniCodes'' UniForms bogus StrikeFont with real TrueType font.'!
-!provides: 'UniCodesTrueType' 1 8!
+!provides: 'UniCodesTrueType' 1 12!
 !requires: 'UniCodes' 1 58 nil!
 !requires: 'VectorGraphics' 1 125 nil!
 SystemOrganization addCategory: #UniCodesTrueType!
@@ -24,8 +24,8 @@ UniTextEditor openFromFileEntry:
 	((CodePackage packageOfClass: UniCodesTrueTypePackage ifNone: nil) fullFileName 
 		asFileEntry parent // 'utf8sampler.txt').!
 
-!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/21/2020 12:55:27'!
-prePackageInstall
+!UniCodesTrueTypePackage class methodsFor: 'installing' stamp: 'KenD 4/29/2020 14:58:10'!
+postPackageInstall
 	"Load default unicode TrueType font.
 	Currently from: 
 	http://unifoundry.com/pub/unifont/unifont-13.0.01/font-builds/unifont-13.0.01.ttf"
@@ -40,10 +40,20 @@ prePackageInstall
 	unifamily _ TrueTypeFontFamily baseTTFontDescription: baseDesc.
 
 	FontFamily replaceFamilyNamed: 'Unifont' with: unifamily.
-	DisplayScreen runningWorld ifNotNil: [ :world | world fontPreferenceChanged ].
-	" self prePackageInstall "
+	DisplayScreen runningWorld ifNotNil: [ :world | world fontPreferenceChanged ]
 	! !
 UniCodesTrueTypePackage prePackageInstall!
+
+!TrueTypeFont methodsFor: '*unicodestruetype' stamp: 'KenD 4/28/2020 15:16:54'!
+formForCodePoint: aCodePoint
+
+	"Answer Unicode form for UniChar"
+	| glyph |
+	Character
+			evaluateOnce: [ :byte1 :byte2 :byte3 :byte4 |
+				glyph _ UniForms default glyphAtUtf8Byte1: byte1 byte2: byte2 byte3: byte3 byte4: byte4 ]
+			withUtf8BytesOfUnicodeCodePoint: aCodePoint.
+	^glyph form! !
 
 !TrueTypeFont class methodsFor: '*unicodestruetype' stamp: 'KenD 4/8/2020 16:34:26'!
 fromUser: priorFont
@@ -79,9 +89,14 @@ fromUser: priorFont
 	spec ifNil: [^nil].
 	^AbstractFont familyName: spec first pointSize: spec last! !
 
-!UniForms class methodsFor: '*unicodestruetype' stamp: 'KenD 4/7/2020 16:11:23'!
-default
-
-	"Answer Unifont 12p for UniCodesTrueType"
-	^ FontFamily familyName: 'Unifont' pointSize: 12! !
+!TTFontDescription class methodsFor: '*unicodestruetype' stamp: 'KenD 4/5/2020 15:02:16'!
+fromFileEntry: aFileEntry familyName: aStringName
+	"
+	TTFontDescription read: DirectoryEntry smalltalkImageDirectory / 'TrueTypeFonts'. 
+	"
+	| ttfont |
+	Descriptions ifNil: [ Descriptions _ Dictionary new ].
+	ttfont _ TTFontReader readTTFFrom: aFileEntry binaryContents.
+	(Descriptions at: aStringName ifAbsentPut: [ Dictionary new]) at: ttfont emphasis put: ttfont.
+	^self withFamilyName: aStringName! !
 UniCodesTrueTypePackage postPackageInstall!
