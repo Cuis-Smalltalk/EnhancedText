@@ -1,7 +1,7 @@
 'From Cuis 5.0 [latest update: #4126] on 29 April 2020 at 3:24:10 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 81!
+!provides: 'UniCodes' 1 82!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Morphic-Misc1' 1 149 nil!
@@ -5236,7 +5236,7 @@ installEditorAndTextComposition
 createQueryTextMorph: queryString 
 	"create the queryTextMorph"
 	| result |
-	result _ StringMorph new contents: queryString asUniString.
+	result _ LabelMorph new contents: queryString asUniString.
 	"result font: UniForms default."
 	result lock.
 	result morphExtent: 24@2 * self sizeUnit.
