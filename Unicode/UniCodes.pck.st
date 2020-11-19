@@ -1,202 +1,202 @@
-'From Cuis 5.0 [latest update: #4126] on 29 April 2020 at 3:24:10 pm'!
+'From Cuis 5.0 [latest update: #4464] on 19 November 2020 at 2:47:23 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 82!
+!provides: 'UniCodes' 1 83!
 !requires: 'Goodies' 1 6 nil!
 !requires: 'Cuis-Base' 50 4102 nil!
+!requires: 'Collections-CompactArrays' 1 4 nil!
 !requires: 'Morphic-Misc1' 1 149 nil!
 !requires: 'Compression' 1 nil nil!
-!requires: 'Collections-CompactArrays' 1 4 nil!
-SystemOrganization addCategory: #UniCodes!
+SystemOrganization addCategory: 'UniCodes'!
 
 
-!classDefinition: #PluggableUniTextModel category: #UniCodes!
+!classDefinition: #PluggableUniTextModel category: 'UniCodes'!
 PluggableTextModel subclass: #PluggableUniTextModel
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'PluggableUniTextModel class' category: #UniCodes!
+!classDefinition: 'PluggableUniTextModel class' category: 'UniCodes'!
 PluggableUniTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniTextModel category: #UniCodes!
+!classDefinition: #UniTextModel category: 'UniCodes'!
 TextModel subclass: #UniTextModel
 	instanceVariableNames: 'fileName timeStamp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniTextModel class' category: #UniCodes!
+!classDefinition: 'UniTextModel class' category: 'UniCodes'!
 UniTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniFileList category: #UniCodes!
+!classDefinition: #UniFileList category: 'UniCodes'!
 FileList subclass: #UniFileList
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniFileList class' category: #UniCodes!
+!classDefinition: 'UniFileList class' category: 'UniCodes'!
 UniFileList class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniString category: #UniCodes!
+!classDefinition: #UniString category: 'UniCodes'!
 SequenceableCollection subclass: #UniString
 	instanceVariableNames: ''
 	classVariableNames: 'EmptyString Fibonacci MaxRopeDepth'
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniString class' category: #UniCodes!
+!classDefinition: 'UniString class' category: 'UniCodes'!
 UniString class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniFlat category: #UniCodes!
+!classDefinition: #UniFlat category: 'UniCodes'!
 UniString subclass: #UniFlat
 	instanceVariableNames: 'charBlock length'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniFlat class' category: #UniCodes!
+!classDefinition: 'UniFlat class' category: 'UniCodes'!
 UniFlat class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniFlatSlice category: #UniCodes!
+!classDefinition: #UniFlatSlice category: 'UniCodes'!
 UniFlat subclass: #UniFlatSlice
 	instanceVariableNames: 'startIndex'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniFlatSlice class' category: #UniCodes!
+!classDefinition: 'UniFlatSlice class' category: 'UniCodes'!
 UniFlatSlice class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniLazyString category: #UniCodes!
+!classDefinition: #UniLazyString category: 'UniCodes'!
 UniString subclass: #UniLazyString
 	instanceVariableNames: 'soFar uniFileStream fileName totalCount'
 	classVariableNames: 'ChunkSize'
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniLazyString class' category: #UniCodes!
+!classDefinition: 'UniLazyString class' category: 'UniCodes'!
 UniLazyString class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniRepeatedCharString category: #UniCodes!
+!classDefinition: #UniRepeatedCharString category: 'UniCodes'!
 UniString subclass: #UniRepeatedCharString
 	instanceVariableNames: 'char count'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniRepeatedCharString class' category: #UniCodes!
+!classDefinition: 'UniRepeatedCharString class' category: 'UniCodes'!
 UniRepeatedCharString class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniSplice category: #UniCodes!
+!classDefinition: #UniSplice category: 'UniCodes'!
 UniString subclass: #UniSplice
 	instanceVariableNames: 'depth totalLength leftRope rightRope'
 	classVariableNames: 'MeldThreshold'
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniSplice class' category: #UniCodes!
+!classDefinition: 'UniSplice class' category: 'UniCodes'!
 UniSplice class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniFileStream category: #UniCodes!
+!classDefinition: #UniFileStream category: 'UniCodes'!
 StandardFileStream subclass: #UniFileStream
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniFileStream class' category: #UniCodes!
+!classDefinition: 'UniFileStream class' category: 'UniCodes'!
 UniFileStream class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniTextEditor category: #UniCodes!
+!classDefinition: #UniTextEditor category: 'UniCodes'!
 TextEditor subclass: #UniTextEditor
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniTextEditor class' category: #UniCodes!
+!classDefinition: 'UniTextEditor class' category: 'UniCodes'!
 UniTextEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniForms category: #UniCodes!
+!classDefinition: #UniForms category: 'UniCodes'!
 AbstractFont subclass: #UniForms
 	instanceVariableNames: ''
 	classVariableNames: 'FormForMissingChar FormsArray'
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniForms class' category: #UniCodes!
+!classDefinition: 'UniForms class' category: 'UniCodes'!
 UniForms class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniTextModelMorph category: #UniCodes!
-TextModelMorph subclass: #UniTextModelMorph
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'UniCodes'!
-!classDefinition: 'UniTextModelMorph class' category: #UniCodes!
-UniTextModelMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #UniCharEntryMorph category: #UniCodes!
+!classDefinition: #UniCharEntryMorph category: 'UniCodes'!
 LayoutMorph subclass: #UniCharEntryMorph
 	instanceVariableNames: 'label char hex button editor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniCharEntryMorph class' category: #UniCodes!
+!classDefinition: 'UniCharEntryMorph class' category: 'UniCodes'!
 UniCharEntryMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #InnerUniTextMorph category: #UniCodes!
+!classDefinition: #InnerUniTextMorph category: 'UniCodes'!
 InnerTextMorph subclass: #InnerUniTextMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'InnerUniTextMorph class' category: #UniCodes!
+!classDefinition: 'InnerUniTextMorph class' category: 'UniCodes'!
 InnerUniTextMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniFillInTheBlankMorph category: #UniCodes!
+!classDefinition: #UniTextModelMorph category: 'UniCodes'!
+TextModelMorph subclass: #UniTextModelMorph
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'UniCodes'!
+!classDefinition: 'UniTextModelMorph class' category: 'UniCodes'!
+UniTextModelMorph class
+	instanceVariableNames: ''!
+
+!classDefinition: #UniFillInTheBlankMorph category: 'UniCodes'!
 FillInTheBlankMorph subclass: #UniFillInTheBlankMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniFillInTheBlankMorph class' category: #UniCodes!
+!classDefinition: 'UniFillInTheBlankMorph class' category: 'UniCodes'!
 UniFillInTheBlankMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniTextComposition category: #UniCodes!
+!classDefinition: #UniTextComposition category: 'UniCodes'!
 TextComposition subclass: #UniTextComposition
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniTextComposition class' category: #UniCodes!
+!classDefinition: 'UniTextComposition class' category: 'UniCodes'!
 UniTextComposition class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniChar category: #UniCodes!
+!classDefinition: #UniChar category: 'UniCodes'!
 Object subclass: #UniChar
 	instanceVariableNames: 'codePoint'
 	classVariableNames: 'AI AL B2 BA BB BK CB CJ CL CM CP CR CasedLetterBit Cc Cf Cn Co Compositions ControlBit Cs DecimalProperty Decompositions DefaultBreakChar EX GL GeneralCategory GeneralPropMask H2 H3 HL HY ID IN IS JL JT JV L LF LV LVT LVTStateMap LVTStateVec LetterBit LineBreakNames LineBreakProperties LineBreakTable LineBreakTypeNames Ll Lm Lo Lt Lu MarkBit Mc Me Mn NL NS NU Nd Nl No NumberBit OP PO PR Pc Pd Pe Pf Pi Po PropertyNames Ps PunctuationBit QU RI SA SG SP SY Sc SeparatorBit Sk Sm SmalltalkSpecialChars So SymbolBit T ToCasefold ToLower ToUpper V WJ XX ZW ZeroCodePoints Zl Zp Zs'
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniChar class' category: #UniCodes!
+!classDefinition: 'UniChar class' category: 'UniCodes'!
 UniChar class
 	instanceVariableNames: ''!
 
-!classDefinition: #UniStringWrapper category: #UniCodes!
+!classDefinition: #UniStringWrapper category: 'UniCodes'!
 Object subclass: #UniStringWrapper
 	instanceVariableNames: 'uniString'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'UniCodes'!
-!classDefinition: 'UniStringWrapper class' category: #UniCodes!
+!classDefinition: 'UniStringWrapper class' category: 'UniCodes'!
 UniStringWrapper class
 	instanceVariableNames: ''!
 
@@ -329,9 +329,6 @@ aMorph image: ((UniForms formForCodePoint: 16r4E7E)  magnifyBy: 8).
 aMorph openInWorld .
 !
 
-!UniTextModelMorph commentStamp: '<historical>' prior: 0!
-A TextModelMorph which does not squash font.!
-
 !UniCharEntryMorph commentStamp: '<historical>' prior: 0!
 I am a LayoutMorph Row which displays a Unicode char and hex codePoint.
 One may enter the hex value of a Unicode codePoint and it will be displayed.
@@ -339,6 +336,9 @@ One may then paste the corresponding UniChar into a UniString.!
 
 !InnerUniTextMorph commentStamp: '<historical>' prior: 0!
 An InnerTextMorph which does not squash the font.!
+
+!UniTextModelMorph commentStamp: '<historical>' prior: 0!
+A TextModelMorph which does not squash font.!
 
 !UniFillInTheBlankMorph commentStamp: '<historical>' prior: 0!
 A FillInTheBlankMorph which accepts Unicode text!
@@ -4758,42 +4758,41 @@ onBitBltCanvasEngine: engine displayString: aString from: firstIndex to: lastInd
 			engine copyForm: (UniForms formForCodePoint: uniChar codePoint) to: ((p x + delta) @ (p y)) rule: Form and.
 			delta _ delta + width ]]! !
 
-!UniForms class methodsFor: 'private' stamp: 'KenD 4/7/2013 15:33'!
-array16FromHexString: aString
-	"aString consists of 32 or 64 hex digits.
-	If 32, form into 16rXX where XX is each succeeding pair of hex digits.
-	If 64, form into 16rXXXX where hex digits are taken in 4s
-	Shift left 16 and answer the resultant array, which must be size 16
+!UniForms class methodsFor: 'private' stamp: 'jmv 11/19/2020 14:18:16'!
+array16FromNarrowHexString: aString
+	"aString consists of 32 hex digits.
+	In 32, form into 16rXX where XX is each succeeding pair of hex digits.
+	Answer the resultant array, which must be size 16
 	"
 	| coll hexStr |
 	coll := OrderedCollection new: 16.
-	
 	"@@FIXME: Find a smart way to do this"
-	
-	(aString size = 32) ifTrue: [
-		hexStr := '16rXX00'. 
-		1 to: 32 by: 2 do: [ :index |
-			hexStr at: 4 put: (aString at: index).
-			hexStr at: 5 put: (aString at: index + 1).
-			coll addLast: (hexStr asNumber)
-		]
-	]
-	ifFalse: [ 
-		(aString size = 64) 
-			ifFalse: [Error signal: 'Malformed hex pixel string ' , aString].
-		
-		hexStr := '16rXXXX'. "Full-width glyph"
-		1 to: 64 by: 4 do: [ :index |
-			 hexStr at: 4 put: (aString at: index).
-			 hexStr at: 5 put: (aString at: index + 1).
-			 hexStr at: 6 put: (aString at: index + 2).
-			 hexStr at: 7 put: (aString at: index + 3).
-			coll addLast: (hexStr asNumber)
-		]
+	hexStr := '16rXX'. 
+	1 to: 32 by: 2 do: [ :index |
+		hexStr at: 4 put: (aString at: index).
+		hexStr at: 5 put: (aString at: index + 1).
+		coll addLast: (hexStr asNumber)
 	].
-	
-	^ ( coll asArray collect: [ :bits | bits bitShift: 16] ) 
-! !
+	^ coll asArray! !
+
+!UniForms class methodsFor: 'private' stamp: 'jmv 11/19/2020 14:18:12'!
+array16FromWideHexString: aString
+	"aString consists of 64 hex digits.
+	In 64, form into 16rXXXX where hex digits are taken in 4s
+	Answer the resultant array, which must be size 16
+	"
+	| coll hexStr |
+	coll := OrderedCollection new: 16.
+	"@@FIXME: Find a smart way to do this"
+	hexStr := '16rXXXX'. "Full-width glyph"
+	1 to: 64 by: 4 do: [ :index |
+		 hexStr at: 4 put: (aString at: index).
+		 hexStr at: 5 put: (aString at: index + 1).
+		 hexStr at: 6 put: (aString at: index + 2).
+		 hexStr at: 7 put: (aString at: index + 3).
+		coll addLast: (hexStr asNumber)
+	].
+	^ coll asArray! !
 
 !UniForms class methodsFor: 'private' stamp: 'KenD 4/17/2013 14:26'!
 defaultFormForMissingChar
@@ -4951,10 +4950,10 @@ installMeAsFont
 	family atPointSize: 16 put: self new.
 	FontFamily addFamily: family! !
 
-!UniForms class methodsFor: 'class initialization' stamp: 'KenD 6/1/2016 15:24'!
+!UniForms class methodsFor: 'class initialization' stamp: 'jmv 11/19/2020 14:20:35'!
 readFormsArray: fileName
 
-	| formsArray |
+	| formsArray pixelBits |
 	formsArray := Array new: 16rFFFF + 1 withAll: nil.
 	(self package fullFileName asFileEntry parent pathName,  '/', fileName) asFileEntry
 		readStreamDo: [ :fileStream | | aLine |
@@ -4963,7 +4962,7 @@ readFormsArray: fileName
 				  <codePoint>:<bits>
 			where <codePoint> is 4 hex digits and
 			<bits> are either 32 or 64 hex digits. "
-			[aLine isNil] whileFalse:[ |tokens codePoint pixelArray|
+			[aLine isNil] whileFalse: [ | tokens codePoint |
 				(aLine size > 0) ifFalse: [
 					self error: 'Bad file format ' , fileName.
 				^formsArray
@@ -4972,18 +4971,21 @@ readFormsArray: fileName
 			(tokens size = 2) ifFalse: [Error signal: 'Malformed UniForm line: ' , aLine].
 			codePoint := ( '16r', (tokens at: 1)) asNumber.
 			((codePoint > 16rFFFF) or: [codePoint < 0]) ifTrue: [Error signal: 'Bad codePoint ' , (tokens at: 1) ].
-			pixelArray := self array16FromHexString: (tokens at: 2).
 		
 			((tokens at: 2) size = 32)
 			ifTrue: [ "Half Width Character"
+				pixelBits := self array16FromNarrowHexString: (tokens at: 2).
 				formsArray 
 					at: (1 + codePoint)  "Note Bene: CodePoints start at zero"
-					put:  (Form extent: 8@16 fromArray: pixelArray offset: (0 @ 0))
+					put: (Form small1BitExtent: 8@16 pixelBits: pixelBits)
 			]
 			ifFalse: [ "Full width character"
+				((tokens at: 2) size = 64) 
+					ifFalse: [Error signal: 'Malformed hex pixel string ' , (tokens at: 2)].
+				pixelBits := self array16FromWideHexString: (tokens at: 2).
 				formsArray 
 					at: (1 + codePoint) "Note Bene: CodePoints start at zero"
-					put:  (Form extent: 16@16 fromArray: pixelArray offset: (0 @ 0)).
+					put: (Form small1BitExtent: 16@16 pixelBits: pixelBits).
 			].
 			aLine := fileStream nextLine.
 		]
@@ -5104,24 +5106,6 @@ License for blanks.hex
 '
 ! !
 
-!UniTextModelMorph methodsFor: 'initialization' stamp: 'KenD 9/9/2016 14:05:09'!
-innerMorphClass
-	^InnerUniTextMorph! !
-
-!UniTextModelMorph class methodsFor: 'instance creation' stamp: 'KenD 9/9/2016 14:06:19'!
-textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
-	| newModel answer |
-	answer _ self new.
-	newModel _ PluggableUniTextModel on: aTextProvider.
-	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
-	aTextProvider addDependent: newModel.
-	answer model: newModel.
-	^answer! !
-
-!UniTextModelMorph class methodsFor: 'instance creation' stamp: 'KenD 9/9/2016 14:07:11'!
-withText: aTextOrString
-	^self withModel: (UniTextModel withText: aTextOrString asUniString asText)! !
-
 !UniCharEntryMorph methodsFor: 'accessing' stamp: 'KenD 4/27/2020 13:46:07'!
 button
 
@@ -5231,6 +5215,24 @@ installEditorAndTextComposition
 			model textStylerClass ]).
 	self autoCompleterClass:
 		model autoCompleterClass! !
+
+!UniTextModelMorph methodsFor: 'initialization' stamp: 'KenD 9/9/2016 14:05:09'!
+innerMorphClass
+	^InnerUniTextMorph! !
+
+!UniTextModelMorph class methodsFor: 'instance creation' stamp: 'KenD 9/9/2016 14:06:19'!
+textProvider: aTextProvider textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter
+	| newModel answer |
+	answer _ self new.
+	newModel _ PluggableUniTextModel on: aTextProvider.
+	newModel textGetter: textGetter textSetter: textSetter selectionGetter: selectionGetter.
+	aTextProvider addDependent: newModel.
+	answer model: newModel.
+	^answer! !
+
+!UniTextModelMorph class methodsFor: 'instance creation' stamp: 'KenD 9/9/2016 14:07:11'!
+withText: aTextOrString
+	^self withModel: (UniTextModel withText: aTextOrString asUniString asText)! !
 
 !UniFillInTheBlankMorph methodsFor: 'initialization' stamp: 'KenD 10/25/2016 15:15:54'!
 createQueryTextMorph: queryString 
@@ -7769,6 +7771,12 @@ replaceFamilyNamed: aStringName with: newFamily
 	"self addFamily: newFamily. "
 	AvailableFamilies  at: aStringName put:  newFamily! !
 
+!InnerTextMorph methodsFor: '*unicodes' stamp: 'KenD 9/10/2016 07:59:47'!
+model
+
+	^model
+	! !
+
 !FileListWindow class methodsFor: '*unicodes' stamp: 'jmv 6/27/2015 09:56'!
 openUniFileList
 	"Answer a FileList which can view Unicode"
@@ -7776,12 +7784,6 @@ openUniFileList
 	FileListWindow openUniFileList.
 	"
 	FileListWindow open: (UniFileList new directory: DirectoryEntry currentDirectory ) label: nil! !
-
-!InnerTextMorph methodsFor: '*unicodes' stamp: 'KenD 9/10/2016 07:59:47'!
-model
-
-	^model
-	! !
 UniString initialize!
 UniLazyString initialize!
 UniSplice initialize!
