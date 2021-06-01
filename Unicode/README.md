@@ -86,3 +86,18 @@ Unit tests are in separate packages due to large size:
 - UniUtilsTests
 - UniDisplayTests
 - UniInputTests
+
+### Using TrueType fonts
+
+Feature require: 'UniCodes'.
+Feature require: 'VectorGraphics'.
+Preferences disable: #loadOnlyLatinGlyphData.
+TrueTypeFontFamily read: DirectoryEntry smalltalkImageDirectory / 'CTTF'.
+
+World Menu --> Open... --> File List
+
+Find a unicode file (e.g.  'EnhancedText/Unicode/utf8sampler.txt').
+
+Open via 'Unicode Text Edit' button on upper right of File List.
+
+When the text editor opens, select all (right click to get menu) and set font (e.g. Unifont 12).
