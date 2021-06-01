@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4624] on 1 June 2021 at 2:54:29 pm'!
+'From Cuis 5.0 [latest update: #4624] on 1 June 2021 at 3:26:04 pm'!
 'Description Ropes: functional, immutable strings'!
-!provides: 'Ropes' 1 34!
+!provides: 'Ropes' 1 35!
 !requires: 'Goodies' 1 4 nil!
 !requires: 'Cuis-Base' 50 4621 nil!
 !requires: 'Compression' 1 nil nil!
@@ -3784,38 +3784,6 @@ cmdShortcutsSpec
 
 		#(		$u	#align:						'Toggle alignment')
 	)! !
-
-!RopeTextEditor class methodsFor: 'keyboard shortcut tables' stamp: 'KenD 4/24/2016 15:31'!
-initializeMenu
-	"Initialize the mouseButton2 (right button) pop-up menu and corresponding messages."
-	"
-	Editor initialize
-	"
-
-	menu _ SelectionMenu fromArray: {
-		{'Help...'.						#openHelp}.
-		#-.
-		{'Save (s)'.						#save}.
-		{'SaveAs...'.					#saveAs}.
-		#-.
-		{'Find...(f)'.						#find}.
-		{'Find Again (g)'.				#findAgain}.
-		{'Use Selection for Find (j)'.	#setSearchString}.
-		#-.
-		{'Undo - multiple (z)'.			#undo}.
-		{'Redo - multiple (Z)'.			#redo}.
-		{'Undo / Redo history'.		#offerUndoHistory}.
-		#-.
-		{'Copy (c)'.					#copySelection}.
-		{'Cut (x)'.						#cut}.
-		{'Paste (v)'.					#paste}.
-		{'Paste without Format'.		#pasteString}.
-		{'Paste...'.						#pasteRecent}.
-		#-.
-		{'Toggle WordWrap'.			#wrapOnOff}.
-		{'Set Font... (k)'.				#offerFontMenu}.
-		{'Set Alignment...'.				#chooseAlignment}.
-	}! !
 
 !RopeTextEditor class methodsFor: 'file reader registration' stamp: 'KenD 4/24/2016 16:51'!
 fileReaderServicesForFile: filename suffix: suffix
