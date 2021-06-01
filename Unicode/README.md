@@ -88,12 +88,12 @@ Unit tests are in separate packages due to large size:
 - UniInputTests
 
 ### Using TrueType fonts
-
+````Smalltalk
 Feature require: 'UniCodes'.
 Feature require: 'VectorGraphics'.
 Preferences disable: #loadOnlyLatinGlyphData.
 TrueTypeFontFamily read: DirectoryEntry smalltalkImageDirectory / 'CTTF'.
-
+````
 World Menu --> Open... --> File List
 
 Find a unicode file (e.g.  'EnhancedText/Unicode/utf8sampler.txt').
