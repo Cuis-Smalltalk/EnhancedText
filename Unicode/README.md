@@ -14,7 +14,7 @@ Incomplete; Pre-Alpha; Not ready yet to see the light of day...
 - NO font support (uses simple 'forms' from GNU UniFont).
 - Currently, there is NO grapheme composition. Unicode code points are displayed, including 'combining marks'.
 
-- Tested with Cuis 4.2 rev 3319
+- Tested in Cuis 5.0 rev 4621
 
 
 ### Introduction/Overview

@@ -1,12 +1,12 @@
-'From Cuis 5.0 [latest update: #4464] on 19 November 2020 at 2:47:23 pm'!
+'From Cuis 5.0 [latest update: #4624] on 1 June 2021 at 3:08:43 pm'!
 'Description UniCodes -- basic support for Unicode code points
                 -- see http://unicode.org/'!
-!provides: 'UniCodes' 1 83!
+!provides: 'UniCodes' 1 85!
 !requires: 'Goodies' 1 6 nil!
-!requires: 'Cuis-Base' 50 4102 nil!
 !requires: 'Collections-CompactArrays' 1 4 nil!
-!requires: 'Morphic-Misc1' 1 149 nil!
+!requires: 'Cuis-Base' 50 4624 nil!
 !requires: 'Compression' 1 nil nil!
+!requires: 'Morphic-Misc1' 1 149 nil!
 SystemOrganization addCategory: 'UniCodes'!
 
 
@@ -4690,6 +4690,11 @@ height
 
 	^16! !
 
+!UniForms methodsFor: 'accessing' stamp: 'KenD 6/1/2021 13:33:56'!
+lineGap
+	"Leading of the font."
+	^0! !
+
 !UniForms methodsFor: 'accessing' stamp: 'KenD 4/29/2019 14:54:50'!
 lineSpacing
 
@@ -5134,18 +5139,18 @@ pasteChar
 	editor clipboardTextPut: replacementString; paste
 	"editor replaceSelectionWith: replacementString"! !
 
-!UniCharEntryMorph methodsFor: 'event handling' stamp: 'KenD 4/28/2020 16:23:26'!
+!UniCharEntryMorph methodsFor: 'event handling' stamp: 'KenD 6/1/2021 15:01:19'!
 showCodepoint
 
 	"Update display based on hex input"
-	char image: (UniForms default formForCodePoint: hex value); redrawNeeded! !
+	char image: (UniForms formForCodePoint: hex value); redrawNeeded! !
 
-!UniCharEntryMorph methodsFor: 'initialization' stamp: 'KenD 4/29/2020 08:31:34'!
+!UniCharEntryMorph methodsFor: 'initialization' stamp: 'KenD 6/1/2021 14:57:41'!
 label: aString value: aCodePoint buttonCaption: aButtonString buttonTarget: target buttonAction: aSymbol
 	"<label> [hex.]  [C] (<caption>)"
 
 	label := LabelMorph contents: aString.
-	char := ImageMorph new :: image: (UniForms default formForCodePoint: aCodePoint).
+	char := ImageMorph new :: image: (UniForms formForCodePoint: aCodePoint).
 	hex := SimpleNumberEntryMorph new ::
 				legalChars: '1234567890ABCDEFabcdef'
 		    	numCharsToHold: 4 
