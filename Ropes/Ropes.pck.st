@@ -1,129 +1,129 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3374] on 25 July 2018 at 2:04:39 pm'!
+'From Cuis 5.0 [latest update: #4621] on 1 June 2021 at 11:40:49 am'!
 'Description Ropes: functional, immutable strings'!
-!provides: 'Ropes' 1 30!
-!requires: 'Cuis-Base' 42 2942 nil!
+!provides: 'Ropes' 1 33!
 !requires: 'Goodies' 1 4 nil!
+!requires: 'Cuis-Base' 50 4621 nil!
 !requires: 'Compression' 1 nil nil!
-SystemOrganization addCategory: #Ropes!
+SystemOrganization addCategory: 'Ropes'!
 
 
-!classDefinition: #RopeTextModel category: #Ropes!
+!classDefinition: #RopeTextModel category: 'Ropes'!
 TextModel subclass: #RopeTextModel
 	instanceVariableNames: 'fileName timeStamp'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopeTextModel class' category: #Ropes!
+!classDefinition: 'RopeTextModel class' category: 'Ropes'!
 RopeTextModel class
 	instanceVariableNames: ''!
 
-!classDefinition: #RopeFileList category: #Ropes!
+!classDefinition: #RopeFileList category: 'Ropes'!
 FileList subclass: #RopeFileList
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopeFileList class' category: #Ropes!
+!classDefinition: 'RopeFileList class' category: 'Ropes'!
 RopeFileList class
 	instanceVariableNames: ''!
 
-!classDefinition: #Rope category: #Ropes!
+!classDefinition: #Rope category: 'Ropes'!
 SequenceableCollection subclass: #Rope
 	instanceVariableNames: ''
 	classVariableNames: 'EmptyRope Fibonacci MaxRopeDepth'
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'Rope class' category: #Ropes!
+!classDefinition: 'Rope class' category: 'Ropes'!
 Rope class
 	instanceVariableNames: ''!
 
-!classDefinition: #ConcatRope category: #Ropes!
+!classDefinition: #ConcatRope category: 'Ropes'!
 Rope subclass: #ConcatRope
 	instanceVariableNames: 'depth totalLength leftRope rightRope'
 	classVariableNames: 'MeldThreshold'
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'ConcatRope class' category: #Ropes!
+!classDefinition: 'ConcatRope class' category: 'Ropes'!
 ConcatRope class
 	instanceVariableNames: ''!
 
-!classDefinition: #FlatRope category: #Ropes!
+!classDefinition: #FlatRope category: 'Ropes'!
 Rope subclass: #FlatRope
 	instanceVariableNames: 'theString'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'FlatRope class' category: #Ropes!
+!classDefinition: 'FlatRope class' category: 'Ropes'!
 FlatRope class
 	instanceVariableNames: ''!
 
-!classDefinition: #LazyFileRope category: #Ropes!
+!classDefinition: #LazyFileRope category: 'Ropes'!
 Rope subclass: #LazyFileRope
 	instanceVariableNames: 'soFar fileStream fileName totalCount'
 	classVariableNames: 'ChunkSize'
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'LazyFileRope class' category: #Ropes!
+!classDefinition: 'LazyFileRope class' category: 'Ropes'!
 LazyFileRope class
 	instanceVariableNames: ''!
 
-!classDefinition: #RepeatedCharRope category: #Ropes!
+!classDefinition: #RepeatedCharRope category: 'Ropes'!
 Rope subclass: #RepeatedCharRope
 	instanceVariableNames: 'char count'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RepeatedCharRope class' category: #Ropes!
+!classDefinition: 'RepeatedCharRope class' category: 'Ropes'!
 RepeatedCharRope class
 	instanceVariableNames: ''!
 
-!classDefinition: #SubRope category: #Ropes!
+!classDefinition: #SubRope category: 'Ropes'!
 Rope subclass: #SubRope
 	instanceVariableNames: 'startIndex length theString'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'SubRope class' category: #Ropes!
+!classDefinition: 'SubRope class' category: 'Ropes'!
 SubRope class
 	instanceVariableNames: ''!
 
-!classDefinition: #RopeTextEditor category: #Ropes!
+!classDefinition: #RopeTextEditor category: 'Ropes'!
 TextEditor subclass: #RopeTextEditor
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopeTextEditor class' category: #Ropes!
+!classDefinition: 'RopeTextEditor class' category: 'Ropes'!
 RopeTextEditor class
 	instanceVariableNames: ''!
 
-!classDefinition: #RopePerformanceTest category: #Ropes!
+!classDefinition: #RopePerformanceTest category: 'Ropes'!
 TestCase subclass: #RopePerformanceTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopePerformanceTest class' category: #Ropes!
+!classDefinition: 'RopePerformanceTest class' category: 'Ropes'!
 RopePerformanceTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #RopeTest category: #Ropes!
+!classDefinition: #RopeTest category: 'Ropes'!
 TestCase subclass: #RopeTest
 	instanceVariableNames: 'flatRope longFlat shortFlat subRope concRope1 concRope2 concRope3 string emptyString subcollection3ElementsSorted nonEmpty5ElementsSorted unsortedCollection indexInNonEmptyArray arrayWithCharacters nonEmpty1element withoutEqualElements sameAtEndAndBegining elementInNonEmpty collectionNotIncluded notIn'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopeTest class' category: #Ropes!
+!classDefinition: 'RopeTest class' category: 'Ropes'!
 RopeTest class
 	instanceVariableNames: ''!
 
-!classDefinition: #RopeWrapper category: #Ropes!
+!classDefinition: #RopeWrapper category: 'Ropes'!
 Object subclass: #RopeWrapper
 	instanceVariableNames: 'theRope'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Ropes'!
-!classDefinition: 'RopeWrapper class' category: #Ropes!
+!classDefinition: 'RopeWrapper class' category: 'Ropes'!
 RopeWrapper class
 	instanceVariableNames: ''!
 
@@ -215,6 +215,32 @@ Use in place of WriteStream for #nextPut: and #nextPutAll.
  vs:
 	WriteStream on: 'abc',
 !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 3/14/2013 19:52'!
+printOn: aStream
+	"Look good in the inspector"
+
+"	aStream nextPut: $'. "
+	self do: [ :char  |
+		aStream nextPut: char.
+		char == $'  ifTrue: [aStream nextPut: char]].
+"	aStream nextPut: $'."! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:05'!
+storeOn: aStream 
+	"Act like (aString asRope)"
+	"Print inside string quotes, doubling inbedded quotes."
+
+	aStream nextPut: $( .
+	self encodeDoublingQuoteOn: aStream.
+	aStream nextPutAll: ' asRope)'.! !
+
+!LazyFileRope methodsFor: 'printing' stamp: 'KenD 4/22/2013 19:19'!
+printOn: aStream 
+	"Look good in the inspector"
+
+	aStream nextPutAll: 'LazyFileRope(''' , fileName , ''')'
+	! !
 
 !RopeTextModel methodsFor: 'commands' stamp: 'KenD 4/23/2013 20:14'!
 acceptContentsFrom: aTextModelMorph
@@ -337,6 +363,12 @@ saveAs: aFileName
 	^true
 
 ! !
+
+!RopeTextModel methodsFor: 'file handeling' stamp: 'KenD 6/1/2021 10:15:31'!
+saveOn: stream as: format
+	"Saves the model to the given stream"
+	stream binary.
+	stream nextPutAll: self actualContents asString asString.! !
 
 !RopeTextModel methodsFor: 'file handeling' stamp: 'KenD 5/31/2016 16:31'!
 saveToNewFileNotifying: aTextModelMorph
@@ -2521,29 +2553,10 @@ print
 
 	Transcript show: self; newLine! !
 
-!Rope methodsFor: 'printing' stamp: 'KenD 3/14/2013 19:52'!
-printOn: aStream
-	"Look good in the inspector"
-
-"	aStream nextPut: $'. "
-	self do: [ :char  |
-		aStream nextPut: char.
-		char == $'  ifTrue: [aStream nextPut: char]].
-"	aStream nextPut: $'."! !
-
 !Rope methodsFor: 'printing' stamp: 'KenD 2/10/2013 19:56'!
 printString
 
 	^String streamContents: [:s | self printOn: s]! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:05'!
-storeOn: aStream 
-	"Act like (aString asRope)"
-	"Print inside string quotes, doubling inbedded quotes."
-
-	aStream nextPut: $( .
-	self encodeDoublingQuoteOn: aStream.
-	aStream nextPutAll: ' asRope)'.! !
 
 !Rope methodsFor: 'printing' stamp: 'KenD 2/9/2013 19:36'!
 stringRepresentation
@@ -3428,13 +3441,6 @@ initializeFromFile: aFmFileEntry "entry exists and is a text file"
 	^self
 	! !
 
-!LazyFileRope methodsFor: 'printing' stamp: 'KenD 4/22/2013 19:19'!
-printOn: aStream 
-	"Look good in the inspector"
-
-	aStream nextPutAll: 'LazyFileRope(''' , fileName , ''')'
-	! !
-
 !LazyFileRope class methodsFor: 'class initialization' stamp: 'KenD 4/22/2013 19:38'!
 initialize
 "
@@ -3669,6 +3675,38 @@ string: aString startIndex: anIndex length: numberOfChars
 	
 	^ self new string: aString startIndex: anIndex length: numberOfChars! !
 
+!RopeTextEditor methodsFor: 'accessing' stamp: 'KenD 6/1/2021 10:49:46'!
+getMenu
+	"I override inherited #getMenu"
+	| aMenu | 
+	aMenu _ MenuMorph new defaultTarget: self.
+	^aMenu
+		addTitle: self class name;
+		addStayUpIcons;
+		add: 'Help...'	 action: #openHelp;
+		addLine;
+		add: 'Save (s)'		action: #save;
+		add:  'SaveAs...' action: #saveAs;
+		addLine;
+		add: 'Find...(f)' action: #find;
+		add: 'Find Again (g)' action: #findAgain;
+		add: 'Use Selection for Find (j)' action: #setSearchString;
+		addLine;
+		add: 'Undo - multiple (z)' action:#undo;
+		add: 'Redo - multiple (Z)' action: #redo;
+		add: 'Undo / Redo history' action: #offerUndoHistory;
+		addLine;
+		add: 'Copy (c)' action: 	#copySelection;
+		add: 'Cut (x)' action:	#cut;
+		add: 'Paste (v)' action: 		#paste;
+		add: 'Paste without Format' action:	#pasteString;
+		add: 'Paste...' action:		#pasteRecent;
+		addLine;
+		add: 'Toggle WordWrap' action:	#wrapOnOff;
+		add: 'Set Font.. (k)' action: #offerFontMenu;
+		add: 'Set Alignment...' action: 	#chooseAlignment;
+		yourself! !
+
 !RopeTextEditor methodsFor: 'accessing' stamp: 'KenD 9/19/2016 12:20:11'!
 icon
 
@@ -3819,14 +3857,13 @@ openTextEditor
 
 	RopeTextModel openLabel: 'Text Editor'! !
 
-!RopeTextEditor class methodsFor: 'class initialization' stamp: 'KenD 4/24/2016 17:51'!
+!RopeTextEditor class methodsFor: 'class initialization' stamp: 'KenD 6/1/2021 10:19:10'!
 initialize
 
 "
 	RopeTextEditor initialize.
 "
 	super initialize.
-	self initializeMenu.
 	FileList registerFileReader: self.! !
 
 !RopeTextEditor class methodsFor: 'menu-world' stamp: 'KenD 7/25/2018 14:01:29'!
