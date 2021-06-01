@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4621] on 1 June 2021 at 11:40:49 am'!
+'From Cuis 5.0 [latest update: #4624] on 1 June 2021 at 2:54:29 pm'!
 'Description Ropes: functional, immutable strings'!
-!provides: 'Ropes' 1 33!
+!provides: 'Ropes' 1 34!
 !requires: 'Goodies' 1 4 nil!
 !requires: 'Cuis-Base' 50 4621 nil!
 !requires: 'Compression' 1 nil nil!
@@ -540,6 +540,36 @@ readContentsBrief: ignoredBrevityFlag
 editorClass
 
 	^RopeTextEditor! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:04'!
+encodeDoublingQuoteOn: aStream 
+	"Print inside string quotes, doubling inbedded quotes."
+
+	aStream print: $'.
+	self do: [ :char  |
+		aStream print: char.
+		char == $' ifTrue: [aStream print: char]].
+	aStream print: $'! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/22/2013 20:22'!
+isLiteral
+
+	^false   "NB: a String returns true"! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/22/2013 20:22'!
+print
+
+	Transcript show: self; newLine! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/10/2013 19:56'!
+printString
+
+	^String streamContents: [:s | self printOn: s]! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/9/2013 19:36'!
+stringRepresentation
+
+	^String streamContents: [:s | self do: [ :char | s nextPut: char]]! !
 
 !Rope methodsFor: 'copying' stamp: 'KenD 9/10/2016 16:50:00'!
 , aRopeOrStringOrText
@@ -2469,6 +2499,17 @@ displayOn: aDisplayMedium at: aPoint textColor: aColor
 
 	aDisplayMedium getCanvas drawString: self at: aPoint font: nil color: aColor! !
 
+!Rope methodsFor: 'displaying' stamp: 'KenD 6/1/2021 14:52:14'!
+displayOnBitBltCanvasEngine: engine from: startIndex to: stopIndex at: p trueTypeFont: aTrueTypeFont color: color
+    "Double dispatch"
+    ^ engine
+        displayString: self
+        from: startIndex
+        to: stopIndex
+        at: p
+        trueTypeFont: aTrueTypeFont
+        color: color! !
+
 !Rope methodsFor: 'displaying' stamp: 'KenD 2/22/2013 20:21'!
 displayProgressAt: aPoint from: minVal to: maxVal during: workBlock
 	"Display this string as a caption over a progress bar while workBlock is evaluated.
@@ -2532,36 +2573,6 @@ edit
 editLabel: labelString
 
 	TextModel new contents: self; openLabel: labelString! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:04'!
-encodeDoublingQuoteOn: aStream 
-	"Print inside string quotes, doubling inbedded quotes."
-
-	aStream print: $'.
-	self do: [ :char  |
-		aStream print: char.
-		char == $' ifTrue: [aStream print: char]].
-	aStream print: $'! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/22/2013 20:22'!
-isLiteral
-
-	^false   "NB: a String returns true"! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/22/2013 20:22'!
-print
-
-	Transcript show: self; newLine! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/10/2013 19:56'!
-printString
-
-	^String streamContents: [:s | self printOn: s]! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/9/2013 19:36'!
-stringRepresentation
-
-	^String streamContents: [:s | self do: [ :char | s nextPut: char]]! !
 
 !Rope methodsFor: 'paragraph support' stamp: 'KenD 2/22/2013 21:04'!
 encompassLine: anInterval
