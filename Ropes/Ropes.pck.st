@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4624] on 1 June 2021 at 3:26:04 pm'!
+'From Cuis 5.0 [latest update: #4624] on 2 June 2021 at 11:45:02 am'!
 'Description Ropes: functional, immutable strings'!
-!provides: 'Ropes' 1 35!
+!provides: 'Ropes' 1 36!
 !requires: 'Goodies' 1 4 nil!
 !requires: 'Cuis-Base' 50 4621 nil!
 !requires: 'Compression' 1 nil nil!
@@ -2498,17 +2498,6 @@ displayOn: aDisplayMedium at: aPoint textColor: aColor
 	"Show a representation of the receiver as a DisplayText at location aPoint on aDisplayMedium, rendering the text in the designated color"
 
 	aDisplayMedium getCanvas drawString: self at: aPoint font: nil color: aColor! !
-
-!Rope methodsFor: 'displaying' stamp: 'KenD 6/1/2021 14:52:14'!
-displayOnBitBltCanvasEngine: engine from: startIndex to: stopIndex at: p trueTypeFont: aTrueTypeFont color: color
-    "Double dispatch"
-    ^ engine
-        displayString: self
-        from: startIndex
-        to: stopIndex
-        at: p
-        trueTypeFont: aTrueTypeFont
-        color: color! !
 
 !Rope methodsFor: 'displaying' stamp: 'KenD 2/22/2013 20:21'!
 displayProgressAt: aPoint from: minVal to: maxVal during: workBlock
