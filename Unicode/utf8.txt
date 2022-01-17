@@ -57,7 +57,7 @@ In the case of 乾, I am reading the character as 斡, heaven's pivot.  For us, 
 
 The handle of the big dipper (斗) turns around heaven's pivot. An ancient Chinese proverb states:  "When the handle of the dipper points east at nightfall it is spring throughout the land; when it points south, it is summer; when west, it is autumn, and when north, winter." [See Marshall's Mandate of Heaven, pg 65]
 
-Constellations in the 斗宿 (the celestial Dipper Mansion) include 斗 (the Dipper itself),  天龠 (Heaven's Keyhole) and 建.  The MaWangDui (馬王堆 帛書 = Horse King Ruin  Silk Manuscript) version of the Zhou Yi has 建 in place of 乾.  Eduard Shaughnessy [see refs at end] translates 建 as key.  Karlgren gives (among other) definitions for 建 as linchpin and 斡 as wheel axle cap.  The derived meanings of 建 and 乾 are to establish (set up a linchpin/kingpin) and to revolve.  In hind sight the stellar connection and the theme of revolving round a stable point is pretty obvious.
+Constellations in the 斗宿 (the celestial Dipper Mansion) include 斗 (the Dipper itself),  天龠 (Heaven's Keyhole) and 建.  The MaWangDui (馬王堆 帛書 = Horse King Ruin  Silk Manuscript) version of the Zhou Yi has 建 in place of 乾.  Eduard Shaughnessy [see refs at end] translates 建 as key.  Karlgren gives (among other) definitions for 建 as linchpin and 斡 as wheel axle cap.  The derived meanings of 建 and 乾 are to establish (set up a linchpin/kingpin) and to revolve.  In hind sight the stellar connection and the theme of revolving round a stable point is natural.
 
 The bulk of the 乾 hexagram lines deal with dragons.  The winter is dry, and dragons sleep in deep river pools.  In the spring, throw iron and other objects into these pools to waken the dragons.  An awakened dragon flies into the sky, causing lightning and thunder, hence rain, which fructifies the fields.  They are very fast, but sometimes one catches a glimpse of a tail, claw, or some scales, and in some cases one sees an entire dragon.  
 
@@ -573,10 +573,10 @@ Auspicious. Nothing not favorable.
 
 
 
-Hexagram 15 - 謙 - Hamster [Modesty]
+Hexagram 15 - 謙 - Cuis [Modesty]
 
 謙   亨。君子有終。
-Hamster [鼸]. Success.
+Cuis [鼸]. Success.
 The noble son has an end [to his day].
 
 初六   謙謙君子。用涉大川。吉。
@@ -585,17 +585,17 @@ Useful to ford the big river.
 Auspicious.
 
 六二   鳴謙。貞吉。
-Calling hamster.
+Calling Cuis.
 Determination auspicious.
 
 九三   勞謙。君子有終。吉。
-Working (industrious) hamster.
+Working (industrious) Cuis.
 The noble son has an end.
 Auspicious. 
 
 六四   无不利。撝謙。
 Nothing that is not favorable.
-Displaying hamster.
+Displaying Cuis.
 
 六五   不富以其鄰。利用侵伐。无不利。
 Not enriching by means of its suburb.
@@ -603,7 +603,7 @@ Favorable to use invasion attack.
 Nothing not favorable.
 
 上六   鳴謙。利用行師。征邑國。
-Calling hamster.
+Calling Cuis.
 Favorable to use traveling army.
 Attack town of state.
 
