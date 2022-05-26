@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4624] on 2 June 2021 at 11:45:02 am'!
+'From Cuis 6.0 [latest update: #5202] on 26 May 2022 at 12:50:42 pm'!
 'Description Ropes: functional, immutable strings'!
-!provides: 'Ropes' 1 36!
+!provides: 'Ropes' 1 37!
 !requires: 'Goodies' 1 4 nil!
 !requires: 'Cuis-Base' 50 4621 nil!
 !requires: 'Compression' 1 nil nil!
@@ -215,32 +215,6 @@ Use in place of WriteStream for #nextPut: and #nextPutAll.
  vs:
 	WriteStream on: 'abc',
 !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 3/14/2013 19:52'!
-printOn: aStream
-	"Look good in the inspector"
-
-"	aStream nextPut: $'. "
-	self do: [ :char  |
-		aStream nextPut: char.
-		char == $'  ifTrue: [aStream nextPut: char]].
-"	aStream nextPut: $'."! !
-
-!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:05'!
-storeOn: aStream 
-	"Act like (aString asRope)"
-	"Print inside string quotes, doubling inbedded quotes."
-
-	aStream nextPut: $( .
-	self encodeDoublingQuoteOn: aStream.
-	aStream nextPutAll: ' asRope)'.! !
-
-!LazyFileRope methodsFor: 'printing' stamp: 'KenD 4/22/2013 19:19'!
-printOn: aStream 
-	"Look good in the inspector"
-
-	aStream nextPutAll: 'LazyFileRope(''' , fileName , ''')'
-	! !
 
 !RopeTextModel methodsFor: 'commands' stamp: 'KenD 4/23/2013 20:14'!
 acceptContentsFrom: aTextModelMorph
@@ -561,10 +535,29 @@ print
 
 	Transcript show: self; newLine! !
 
+!Rope methodsFor: 'printing' stamp: 'KenD 3/14/2013 19:52'!
+printOn: aStream
+	"Look good in the inspector"
+
+"	aStream nextPut: $'. "
+	self do: [ :char  |
+		aStream nextPut: char.
+		char == $'  ifTrue: [aStream nextPut: char]].
+"	aStream nextPut: $'."! !
+
 !Rope methodsFor: 'printing' stamp: 'KenD 2/10/2013 19:56'!
 printString
 
 	^String streamContents: [:s | self printOn: s]! !
+
+!Rope methodsFor: 'printing' stamp: 'KenD 2/23/2013 14:05'!
+storeOn: aStream 
+	"Act like (aString asRope)"
+	"Print inside string quotes, doubling inbedded quotes."
+
+	aStream nextPut: $( .
+	self encodeDoublingQuoteOn: aStream.
+	aStream nextPutAll: ' asRope)'.! !
 
 !Rope methodsFor: 'printing' stamp: 'KenD 2/9/2013 19:36'!
 stringRepresentation
@@ -2784,16 +2777,16 @@ fromString: aString
 
 	^FlatRope fromString: aString! !
 
-!Rope class methodsFor: 'instance creation' stamp: 'KenD 2/21/2013 17:39'!
+!Rope class methodsFor: 'instance creation' stamp: 'jmv 5/26/2022 12:20:47'!
 fromUtf8: aByteArray
 	"Convert the given bytes from UTF-8 to  the internal encoding: ISO Latin 9 (ISO 8859-15).
 	See #asUtf8 "
 	"For any unicode chars not in ISO Latin 9 (ISO 8859-15), embed an NCR.
 	See http://en.wikipedia.org/wiki/Numeric_character_reference"
 
-	^ (String fromUtf8: aByteArray hex: false trimLastNull: false) asRope! !
+	^ (String fromUtf8Bytes: aByteArray hex: false trimLastNull: false) asRope! !
 
-!Rope class methodsFor: 'instance creation' stamp: 'KenD 2/21/2013 17:40'!
+!Rope class methodsFor: 'instance creation' stamp: 'jmv 5/26/2022 12:20:42'!
 fromUtf8: aByteArray hex: useHexForNCRs trimLastNull: doTrimLastNullChar
 	"Convert the given string from UTF-8 to  the internal encoding: ISO Latin 9 (ISO 8859-15)"
 	"For unicode chars not in ISO Latin 9 (ISO 8859-15), embed Decimal NCRs or Hexadecimal NCRs according to useHex.
@@ -2805,7 +2798,7 @@ fromUtf8: aByteArray hex: useHexForNCRs trimLastNull: doTrimLastNullChar
 	This allows handling the full Unicode in Cuis tools, that can only display the Latin alphabet, by editing the NCRs.
 	The conversions can be done when reading / saving files, or when pasting from Clipboard and storing back on it."
 
-	^ (String fromUtf8: aByteArray hex: useHexForNCRs trimLastNull: doTrimLastNullChar) asRope! !
+	^ (String fromUtf8Bytes: aByteArray hex: useHexForNCRs trimLastNull: doTrimLastNullChar) asRope! !
 
 !Rope class methodsFor: 'instance creation' stamp: 'KenD 2/21/2013 17:33'!
 lfString
@@ -3278,6 +3271,13 @@ fromString: aString
 
 	^(self new initialize with: aString copy;
 	   yourself)! !
+
+!LazyFileRope methodsFor: 'printing' stamp: 'KenD 4/22/2013 19:19'!
+printOn: aStream 
+	"Look good in the inspector"
+
+	aStream nextPutAll: 'LazyFileRope(''' , fileName , ''')'
+	! !
 
 !LazyFileRope methodsFor: 'accessing' stamp: 'KenD 4/22/2013 19:31'!
 at: anIndex
